@@ -13,6 +13,8 @@ public class DecodeWays {
 
         int ways = 0;
 
+        int consecutiveTwoUpdates = 0;
+
         for (int i = 0; i < size - 1; i++) {
             final char c = s.charAt(i);
             final char next = s.charAt(i + 1);
@@ -25,15 +27,32 @@ public class DecodeWays {
                 return 0;
             } else if (c > '2') {
                 ways++;
+                if (consecutiveTwoUpdates > 1) {
+                    ways--;
+                }
+                consecutiveTwoUpdates = 0;
             } else if (c == '1' || (c == '2' && (s.charAt(i + 1) <= '6'))) {
                 if (next == '0') {
                     ways++;
+                    if (consecutiveTwoUpdates > 1) {
+                        ways--;
+                    }
+                    consecutiveTwoUpdates = 0;
                 } else {
                     ways += 2;
+                    consecutiveTwoUpdates++;
                 }
             } else {
+                if (consecutiveTwoUpdates > 1) {
+                    ways--;
+                }
+                consecutiveTwoUpdates = 0;
                 ways++;
             }
+        }
+
+        if (consecutiveTwoUpdates > 1) {
+            ways--;
         }
 
         return ways;
