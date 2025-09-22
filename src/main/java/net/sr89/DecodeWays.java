@@ -8,7 +8,11 @@ public class DecodeWays {
         final int size = s.length();
 
         if (size == 1) {
-            return isInvalidCharacter(s.charAt(0)) || '0' == s.charAt(0) ? 0 : 1;
+            return isInvalidCharacter(s.charAt(0)) || isZero(s.charAt(0)) ? 0 : 1;
+        }
+
+        if (isZero(s.charAt(0))) {
+            return 0;
         }
 
         int ways = 0;
@@ -23,18 +27,18 @@ public class DecodeWays {
                 return 0;
             }
 
+
             if (c == '0' && (i == 0 || s.charAt(i - 1) > '2')) {
                 return 0;
             } else if (c > '2') {
-                ways++;
                 if (consecutiveTwoUpdates > 1) {
                     ways--;
                 }
                 consecutiveTwoUpdates = 0;
             } else if (c == '1' || (c == '2' && (s.charAt(i + 1) <= '6'))) {
-                if (next == '0') {
-                    ways++;
-                    if (consecutiveTwoUpdates > 1) {
+                if (isZero(next)) {
+                    i++;
+                    if (consecutiveTwoUpdates > 0) {
                         ways--;
                     }
                     consecutiveTwoUpdates = 0;
@@ -56,6 +60,10 @@ public class DecodeWays {
         }
 
         return ways;
+    }
+
+    private boolean isZero(char c) {
+        return c == '0';
     }
 
     private static boolean isInvalidCharacter(char c) {
