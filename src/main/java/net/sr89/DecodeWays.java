@@ -31,6 +31,9 @@ public class DecodeWays {
             if (c == '0' && (i == 0 || s.charAt(i - 1) > '2')) {
                 return 0;
             } else if (c > '2') {
+                if (ways == 0) {
+                    ways++;
+                }
                 if (consecutiveTwoUpdates > 1) {
                     ways--;
                 }

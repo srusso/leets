@@ -29,7 +29,8 @@ class DecodeWaysTest {
                 Arguments.of(2, "26"),
                 Arguments.of(5, "2226"),
                 Arguments.of(7, "22226"),
-                Arguments.of(1, "2101")
+                Arguments.of(1, "2101"),
+                Arguments.of(1, "99")
         );
     }
 }
