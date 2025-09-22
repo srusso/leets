@@ -40,6 +40,8 @@ public class DecodeWays {
                     i++;
                     if (consecutiveTwoUpdates > 0) {
                         ways--;
+                    } else {
+                        ways++;
                     }
                     consecutiveTwoUpdates = 0;
                 } else {
