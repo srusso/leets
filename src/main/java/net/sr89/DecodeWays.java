@@ -11,60 +11,86 @@ public class DecodeWays {
             return isInvalidCharacter(s.charAt(0)) || isZero(s.charAt(0)) ? 0 : 1;
         }
 
-        if (isZero(s.charAt(0))) {
-            return 0;
-        }
-
-        int ways = 0;
-
-        int consecutiveTwoUpdates = 0;
-
-        for (int i = 0; i < size - 1; i++) {
-            final char c = s.charAt(i);
-            final char next = s.charAt(i + 1);
-
-            if (isInvalidCharacter(c)) {
+        if (size == 2) {
+            final char first = s.charAt(0);
+            final char second = s.charAt(1);
+            if (isZero(first)) {
                 return 0;
-            }
-
-
-            if (c == '0' && (i == 0 || s.charAt(i - 1) > '2')) {
-                return 0;
-            } else if (c > '2') {
-                if (ways == 0) {
-                    ways++;
-                }
-                if (consecutiveTwoUpdates > 1) {
-                    ways--;
-                }
-                consecutiveTwoUpdates = 0;
-            } else if (c == '1' || (c == '2' && (s.charAt(i + 1) <= '6'))) {
-                if (isZero(next)) {
-                    i++;
-                    if (consecutiveTwoUpdates > 0) {
-                        ways--;
-                    } else {
-                        ways++;
-                    }
-                    consecutiveTwoUpdates = 0;
-                } else {
-                    ways += 2;
-                    consecutiveTwoUpdates++;
-                }
+            } else if (needToPair(first, second)) {
+                return 1;
+            } else if (canPair(first, second)) {
+                return 2;
             } else {
-                if (consecutiveTwoUpdates > 1) {
-                    ways--;
-                }
-                consecutiveTwoUpdates = 0;
-                ways++;
+                return 1;
             }
         }
 
-        if (consecutiveTwoUpdates > 1) {
-            ways--;
+        return numDecodings(s, size - 3);
+    }
+
+    public int numDecodings(String s, int idx) {
+        // represents the result at index idx + 2
+        int nextNextRes = isInvalidCharacter(s.charAt(idx + 2)) || isZero(s.charAt(idx + 2)) ? 0 : 1;
+        // represents the result at index idx + 1
+        int nextRes;
+        // represents the result at index idx
+        int curr = 0;
+        {
+            final char first = s.charAt(idx + 1);
+            final char second = s.charAt(idx + 2);
+            if (isZero(first)) {
+                nextRes = 0;
+            } else if (needToPair(first, second)) {
+                nextRes = 1;
+            } else if (canPair(first, second)) {
+                nextRes = 2;
+            } else {
+                nextRes = 1;
+            }
         }
 
-        return ways;
+        for (int i = idx; i >= 0; i--) {
+            final char first = s.charAt(i);
+            final char second = s.charAt(i + 1);
+            final char third = s.charAt(i + 2);
+
+            if (needToPair(first, second)) {
+                curr = nextNextRes;
+            } else if (cannotPair(first, second, third)) {
+                curr = nextRes;
+            } else if (canPair(first, second, third)) {
+                curr = nextRes + nextNextRes;
+            } else if (isInvalidCombination(first, second)) {
+                return 0;
+            } else {
+                curr = nextRes;
+            }
+
+            nextNextRes = nextRes;
+            nextRes = curr;
+        }
+
+        return curr;
+    }
+
+    private boolean isInvalidCombination(char first, char second) {
+        return isZero(first) && isZero(second);
+    }
+
+    private boolean cannotPair(char first, char second, char third) {
+        return first > '2' || second > '6' || isZero(third);
+    }
+
+    private boolean needToPair(char c, char next) {
+        return canPair(c, next) && isZero(next);
+    }
+
+    private boolean canPair(char c, char next) {
+        return c == '1' || (c == '2' && (next <= '6'));
+    }
+
+    private boolean canPair(char c, char next, char nextNext) {
+        return canPair(c, next) && !isZero(nextNext);
     }
 
     private boolean isZero(char c) {

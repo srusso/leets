@@ -20,6 +20,9 @@ class DecodeWaysTest {
 
     private static Stream<Arguments> testCases() {
         return Stream.of(
+                Arguments.of(3, "123"),
+                Arguments.of(3, "1234"),
+                Arguments.of(3, "12345"),
                 Arguments.of(2, "12"),
                 Arguments.of(0, "02"),
                 Arguments.of(3, "226"),
@@ -28,9 +31,13 @@ class DecodeWaysTest {
                 Arguments.of(1, "10"),
                 Arguments.of(2, "26"),
                 Arguments.of(5, "2226"),
-                Arguments.of(7, "22226"),
+                Arguments.of(8, "22226"),
                 Arguments.of(1, "2101"),
-                Arguments.of(1, "99")
+                Arguments.of(1, "99"),
+                Arguments.of(13, "121212"),
+                Arguments.of(3, "1201234"),
+                Arguments.of(0, "10011"),
+                Arguments.of(4, "2611055971756562")
         );
     }
 }
