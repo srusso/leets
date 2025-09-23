@@ -78,7 +78,7 @@ public class DecodeWays {
     }
 
     private boolean cannotPair(char first, char second, char third) {
-        return first > '2' || second > '6' || isZero(third);
+        return first > '2' || (first == '2' && second > '6') || isZero(third);
     }
 
     private boolean needToPair(char c, char next) {
