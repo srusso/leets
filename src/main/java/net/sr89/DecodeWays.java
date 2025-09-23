@@ -23,13 +23,9 @@ public class DecodeWays {
             return ways(first, second).orElse(0);
         }
 
-        return numDecodings(s, size - 3);
-    }
-
-    private int numDecodings(String s, int idx) {
         // represents the result at index idx + 2
-        final int nextNextRes = ways(s.charAt(idx + 2));
-        final var ways = ways(s.charAt(idx + 1), s.charAt(idx + 2));
+        final int nextNextRes = ways(s.charAt(size - 1));
+        final var ways = ways(s.charAt(size - 2), s.charAt(size - 1));
 
         if (ways.isEmpty()) {
             return 0;
@@ -38,7 +34,7 @@ public class DecodeWays {
         // represents the result at index idx + 1
         final int nextRes = ways.get();
 
-        return numDecodings(s, idx, nextRes, nextNextRes);
+        return numDecodings(s, size - 3, nextRes, nextNextRes);
     }
 
     private int numDecodings(String s, int idx, int nextRes, int nextNextRes) {
