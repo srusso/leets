@@ -14,7 +14,7 @@ public class DecodeWays {
         final int size = s.length();
 
         if (size == 1) {
-            return isZero(s.charAt(0)) ? 0 : 1;
+            return ways(s.charAt(0));
         }
 
         if (size == 2) {
@@ -28,21 +28,21 @@ public class DecodeWays {
 
     private int numDecodings(String s, int idx) {
         // represents the result at index idx + 2
-        int nextNextRes = isZero(s.charAt(idx + 2)) ? 0 : 1;
-        // represents the result at index idx + 1
-        int nextRes;
-        // represents the result at index idx
-        int curr = 0;
-        {
-            final char first = s.charAt(idx + 1);
-            final char second = s.charAt(idx + 2);
-            Optional<Integer> ways = ways(first, second);
-            if (ways.isEmpty()) {
-                return 0;
-            }
+        final int nextNextRes = ways(s.charAt(idx + 2));
+        final var ways = ways(s.charAt(idx + 1), s.charAt(idx + 2));
 
-            nextRes = ways.get();
+        if (ways.isEmpty()) {
+            return 0;
         }
+
+        // represents the result at index idx + 1
+        final int nextRes = ways.get();
+
+        return numDecodings(s, idx, nextRes, nextNextRes);
+    }
+
+    private int numDecodings(String s, int idx, int nextRes, int nextNextRes) {
+        int ways = 0;
 
         for (int i = idx; i >= 0; i--) {
             final char first = s.charAt(i);
@@ -54,29 +54,33 @@ public class DecodeWays {
             }
 
             if (needToPair(first, second)) {
-                curr = nextNextRes;
+                ways = nextNextRes;
             } else if (cannotPair(first, second, third)) {
-                curr = nextRes;
+                ways = nextRes;
             } else if (canPair(first, second, third)) {
-                curr = nextRes + nextNextRes;
+                ways = nextRes + nextNextRes;
             } else {
-                curr = nextRes;
+                ways = nextRes;
             }
 
             nextNextRes = nextRes;
-            nextRes = curr;
+            nextRes = ways;
         }
 
-        return curr;
+        return ways;
     }
 
-    // i.e. number of ways to decode a two-sized array: [a, b]
+    // number of ways to decode a one-sized array: [a]
+    private int ways(char a) {
+        return isZero(a) ? 0 : 1;
+    }
+
+    // number of ways to decode a two-sized array: [a, b]
     // empty optional if the combination is invalid
     private Optional<Integer> ways(char a, char b) {
         if (isInvalidCombination(a, b)) {
             return Optional.empty();
-        }
-        if (isZero(a)) {
+        } else if (isZero(a)) {
             return Optional.of(0);
         } else if (needToPair(a, b)) {
             return Optional.of(1);
@@ -89,8 +93,7 @@ public class DecodeWays {
 
     private boolean isInvalidCombination(char first, char second) {
         return (isZero(first) && isZero(second))
-                || (first >= '3' && isZero(second))
-                ;
+                || (first >= '3' && isZero(second));
     }
 
     private boolean cannotPair(char first, char second, char third) {
