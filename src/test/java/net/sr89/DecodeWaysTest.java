@@ -37,7 +37,11 @@ class DecodeWaysTest {
                 Arguments.of(13, "121212"),
                 Arguments.of(3, "1201234"),
                 Arguments.of(0, "10011"),
-                Arguments.of(4, "2611055971756562")
+                Arguments.of(4, "2611055971756562"),
+                Arguments.of(0, "012"),
+                Arguments.of(0, "230"),
+                Arguments.of(0, "30"),
+                Arguments.of(0, "70655")
         );
     }
 }

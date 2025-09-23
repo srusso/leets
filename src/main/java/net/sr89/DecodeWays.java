@@ -5,6 +5,10 @@ package net.sr89;
  */
 public class DecodeWays {
     public int numDecodings(String s) {
+        if (isZero(s.charAt(0))) {
+            return 0;
+        }
+
         final int size = s.length();
 
         if (size == 1) {
@@ -14,6 +18,9 @@ public class DecodeWays {
         if (size == 2) {
             final char first = s.charAt(0);
             final char second = s.charAt(1);
+            if (isInvalidCombination(first, second)) {
+                return 0;
+            }
             if (isZero(first)) {
                 return 0;
             } else if (needToPair(first, second)) {
@@ -38,6 +45,9 @@ public class DecodeWays {
         {
             final char first = s.charAt(idx + 1);
             final char second = s.charAt(idx + 2);
+            if (isInvalidCombination(first, second)) {
+                return 0;
+            }
             if (isZero(first)) {
                 nextRes = 0;
             } else if (needToPair(first, second)) {
@@ -54,14 +64,16 @@ public class DecodeWays {
             final char second = s.charAt(i + 1);
             final char third = s.charAt(i + 2);
 
+            if (isInvalidCombination(first, second)) {
+                return 0;
+            }
+
             if (needToPair(first, second)) {
                 curr = nextNextRes;
             } else if (cannotPair(first, second, third)) {
                 curr = nextRes;
             } else if (canPair(first, second, third)) {
                 curr = nextRes + nextNextRes;
-            } else if (isInvalidCombination(first, second)) {
-                return 0;
             } else {
                 curr = nextRes;
             }
@@ -74,7 +86,9 @@ public class DecodeWays {
     }
 
     private boolean isInvalidCombination(char first, char second) {
-        return isZero(first) && isZero(second);
+        return (isZero(first) && isZero(second))
+                || (first >= '3' && isZero(second))
+                ;
     }
 
     private boolean cannotPair(char first, char second, char third) {
