@@ -8,18 +8,20 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TargetPriceTest {
-    final TargetPrice solution = new TargetPrice();
+class TargetSumTest {
+    final TargetSum solution = new TargetSum();
 
     @ParameterizedTest
     @MethodSource("testCases")
-    void runTests(int expected, int targetPrice, int[] nums) {
-        assertEquals(expected, solution.findTargetSumWays(nums, targetPrice));
+    void runTests(int expected, int target, int[] nums) {
+        assertEquals(expected, solution.findTargetSumWays(nums, target));
     }
 
     private static Stream<Arguments> testCases() {
         return Stream.of(
-                Arguments.of(5, 3, new int[]{1, 2, 3, 0, 2})
+                Arguments.of(5, 3, new int[]{1, 1, 1, 1, 1}),
+                Arguments.of(2, 0, new int[]{0}),
+                Arguments.of(256, 1, new int[]{0, 0, 0, 0, 0, 0, 0, 0, 1})
         );
     }
 }
