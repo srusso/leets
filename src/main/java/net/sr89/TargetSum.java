@@ -21,7 +21,7 @@ public class TargetSum {
                 if (n != 0) {
                     ways[k][1 - which] = ways(ways, k + n, which) + ways(ways, k - n, which);
                 } else {
-                    ways[k][1 - which] = ways(ways, k, which) + 1; // prolly wrong
+                    ways[k][1 - which] = ways(ways, k, which) * 2;
                 }
             }
 
