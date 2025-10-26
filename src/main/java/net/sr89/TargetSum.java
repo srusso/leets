@@ -21,23 +21,19 @@ public class TargetSum {
             int n = nums[i];
 
             for (int k = 0; k < SIZE; k++) {
-                if (n != 0) {
-                    ways[1 - which][k] = ways(ways, k + n, which) + ways(ways, k - n, which);
-                } else {
-                    ways[1 - which][k] = ways(ways, k, which) * 2;
-                }
+                ways[1 - which][k] = ways(ways[which], k + n) + ways(ways[which], k - n);
             }
 
             which = 1 - which;
         }
 
-        return ways(ways, target, which);
+        return ways(ways[which], target);
     }
 
-    private int ways(int[][] ways, int i, int which) {
+    private int ways(int[] ways, int i) {
         if (i >= SIZE) {
             return 0;
         }
-        return i >= 0 ? ways[which][i] : ways[which][-i];
+        return i >= 0 ? ways[i] : ways[-i];
     }
 }
