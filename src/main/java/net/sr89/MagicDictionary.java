@@ -1,5 +1,7 @@
 package net.sr89;
 
+import java.util.Arrays;
+
 /**
  * <a href="https://leetcode.com/problems/implement-magic-dictionary/">Leetcode link</a>
  */
@@ -16,7 +18,6 @@ public class MagicDictionary {
      * Up to 100 words.
      * Each word up to 100 characters.
      * Each word only lowercase english letters.
-     *
      */
     public void buildDict(String[] dict) {
         for (String word : dict) {
@@ -25,14 +26,48 @@ public class MagicDictionary {
     }
 
     /**
-     *
      * @param searchWord word of length up to 100 characters
      */
     public boolean search(String searchWord) {
-        return searchInternal(searchWord, 0, dictionary, 0);
+        var currentNode = dictionary;
+
+        for (int i = 0; i < searchWord.length(); i++) {
+            int childIndex = indexOf(searchWord.charAt(i));
+            var newNode = currentNode.children[childIndex];
+
+            if (newNode == null) {
+                // search every other child with mistakes + 1, startAt=i + 1
+                // return the aggregate result
+                final int newStartAt = i + 1;
+                boolean foundContinuationWithOneMistake = Arrays.stream(currentNode.children)
+                        .anyMatch(
+                                child -> {
+                                    return searchExact(
+                                            searchWord,
+                                            newStartAt,
+                                            child
+                                    );
+                                }
+                        );
+
+                if (foundContinuationWithOneMistake) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            currentNode = newNode;
+        }
+
+        return false;
     }
 
-    private boolean searchInternal(String searchWord, int startAt, TrieNode startAtNode, int mistakes) {
+    private boolean searchExact(String searchWord, int startAt, TrieNode startAtNode) {
+        if (startAtNode == null) {
+            return false;
+        }
+
         var currentNode = startAtNode;
 
         for (int i = startAt; i < searchWord.length(); i++) {
@@ -40,13 +75,7 @@ public class MagicDictionary {
             var newNode = currentNode.children[childIndex];
 
             if (newNode == null) {
-                if (mistakes == 0) {
-                    // search every other child with mistakes + 1, startAt=i + 1
-                    // return the aggregate result
-                    return false;
-                } else {
-                    return false;
-                }
+                return false;
             }
 
             currentNode = newNode;
