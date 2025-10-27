@@ -1,9 +1,5 @@
 package net.sr89;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.Stream;
-
 /**
  * <a href="https://leetcode.com/problems/implement-magic-dictionary/">Leetcode link</a>
  */
@@ -116,10 +112,6 @@ public class MagicDictionary {
         private TrieNode(TrieNode[] children, boolean isInDictionary) {
             this.children = children;
             this.isInDictionary = isInDictionary;
-        }
-
-        public Stream<TrieNode> nonNullChildren() {
-            return Arrays.stream(children).filter(Objects::nonNull);
         }
     }
 }
