@@ -9,7 +9,7 @@ public class MagicDictionary {
     private final TrieNode dictionary;
 
     public MagicDictionary() {
-        dictionary = newTerminalNode();
+        dictionary = newTerminalNode(false);
     }
 
     /**
@@ -29,7 +29,30 @@ public class MagicDictionary {
      * @param searchWord word of length up to 100 characters
      */
     public boolean search(String searchWord) {
-        return false;
+        return searchInternal(searchWord, 0, dictionary, 0);
+    }
+
+    private boolean searchInternal(String searchWord, int startAt, TrieNode startAtNode, int mistakes) {
+        var currentNode = startAtNode;
+
+        for (int i = startAt; i < searchWord.length(); i++) {
+            int childIndex = indexOf(searchWord.charAt(i));
+            var newNode = currentNode.children[childIndex];
+
+            if (newNode == null) {
+                if (mistakes == 0) {
+                    // search every other child with mistakes + 1, startAt=i + 1
+                    // return the aggregate result
+                    return false;
+                } else {
+                    return false;
+                }
+            }
+
+            currentNode = newNode;
+        }
+
+        return currentNode != null && currentNode.isInDictionary();
     }
 
     private void addToDictionary(String word) {
@@ -40,7 +63,7 @@ public class MagicDictionary {
             var cNode = currentNode.children[childIndex];
 
             if (cNode == null) {
-                currentNode.children[childIndex] = newTerminalNode();
+                currentNode.children[childIndex] = newTerminalNode(i == word.length() - 1);
             }
 
             currentNode = currentNode.children[childIndex];
@@ -51,11 +74,11 @@ public class MagicDictionary {
         return c - 'a';
     }
 
-    private static TrieNode newTerminalNode() {
-        return new TrieNode(new TrieNode[ALPHABET_SIZE]);
+    private static TrieNode newTerminalNode(boolean isInDictionary) {
+        return new TrieNode(new TrieNode[ALPHABET_SIZE], isInDictionary);
     }
 
-    record TrieNode(TrieNode[] children) {
+    record TrieNode(TrieNode[] children, boolean isInDictionary) {
 
     }
 }
