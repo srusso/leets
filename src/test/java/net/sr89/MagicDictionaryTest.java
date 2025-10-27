@@ -38,6 +38,14 @@ class MagicDictionaryTest {
                                 "hhllo", true,
                                 "hell", false,
                                 "leetcoded", false
+                        )),
+                Arguments.of(
+                        Set.of("hello", "hallo", "leetcode"),
+                        Map.of(
+                                "hello", true,
+                                "hhllo", true,
+                                "hell", false,
+                                "leetcoded", false
                         ))
         );
     }

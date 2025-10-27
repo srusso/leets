@@ -1,6 +1,8 @@
 package net.sr89;
 
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * <a href="https://leetcode.com/problems/implement-magic-dictionary/">Leetcode link</a>
@@ -29,31 +31,34 @@ public class MagicDictionary {
      * @param searchWord word of length up to 100 characters
      */
     public boolean search(String searchWord) {
-        var currentNode = dictionary;
+        return searchInternal(searchWord, 0, dictionary);
+    }
 
-        for (int i = 0; i < searchWord.length(); i++) {
+    private boolean searchInternal(String searchWord, int startAt, TrieNode startAtNode) {
+        var currentNode = startAtNode;
+
+        for (int i = startAt; i < searchWord.length(); i++) {
             int childIndex = indexOf(searchWord.charAt(i));
             var newNode = currentNode.children[childIndex];
 
             if (newNode == null) {
-                // search every other child with mistakes + 1, startAt=i + 1
-                // return the aggregate result
+                // character at index 'i' doesn't match with 'currentNode', so this is our mistake
+                // now let's look into every child for an exact match
                 final int newStartAt = i + 1;
-                boolean foundContinuationWithOneMistake = Arrays.stream(currentNode.children)
+
+                final var exactMatch = currentNode.nonNullChildren()
                         .anyMatch(
-                                child -> {
-                                    return searchExact(
-                                            searchWord,
-                                            newStartAt,
-                                            child
-                                    );
-                                }
+                                child -> searchExact(
+                                        searchWord,
+                                        newStartAt,
+                                        child
+                                ) != null
                         );
 
-                if (foundContinuationWithOneMistake) {
+                if (exactMatch) {
                     return true;
                 } else {
-                    return false;
+
                 }
             }
 
@@ -63,11 +68,10 @@ public class MagicDictionary {
         return false;
     }
 
-    private boolean searchExact(String searchWord, int startAt, TrieNode startAtNode) {
-        if (startAtNode == null) {
-            return false;
-        }
-
+    /**
+     * Returns the trie node representing the searched word, null if not found.
+     */
+    private TrieNode searchExact(String searchWord, int startAt, TrieNode startAtNode) {
         var currentNode = startAtNode;
 
         for (int i = startAt; i < searchWord.length(); i++) {
@@ -75,13 +79,13 @@ public class MagicDictionary {
             var newNode = currentNode.children[childIndex];
 
             if (newNode == null) {
-                return false;
+                return null;
             }
 
             currentNode = newNode;
         }
 
-        return currentNode != null && currentNode.isInDictionary();
+        return currentNode.isInDictionary ? currentNode : null;
     }
 
     private void addToDictionary(String word) {
@@ -107,7 +111,17 @@ public class MagicDictionary {
         return new TrieNode(new TrieNode[ALPHABET_SIZE], isInDictionary);
     }
 
-    record TrieNode(TrieNode[] children, boolean isInDictionary) {
+    private static class TrieNode {
+        final TrieNode[] children;
+        boolean isInDictionary;
 
+        private TrieNode(TrieNode[] children, boolean isInDictionary) {
+            this.children = children;
+            this.isInDictionary = isInDictionary;
+        }
+
+        public Stream<TrieNode> nonNullChildren() {
+            return Arrays.stream(children).filter(Objects::nonNull);
+        }
     }
 }
