@@ -45,10 +45,8 @@ public class MagicDictionary {
             var node = currentNode.children[i];
 
             if (i == childIndex) {
-                if (node != null) {
-                    if (searchInternal(searchWord, nextCharacterIndex + 1, node)) {
-                        return true;
-                    }
+                if (node != null && searchInternal(searchWord, nextCharacterIndex + 1, node)) {
+                    return true;
                 }
             } else {
                 if (searchExact(searchWord, nextCharacterIndex + 1, node) != null) {
