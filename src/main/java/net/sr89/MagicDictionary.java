@@ -34,35 +34,27 @@ public class MagicDictionary {
         return searchInternal(searchWord, 0, dictionary);
     }
 
-    private boolean searchInternal(String searchWord, int startAt, TrieNode startAtNode) {
-        var currentNode = startAtNode;
+    private boolean searchInternal(String searchWord, int nextCharacterIndex, TrieNode currentNode) {
+        if (nextCharacterIndex >= searchWord.length()) {
+            return false;
+        }
 
-        for (int i = startAt; i < searchWord.length(); i++) {
-            int childIndex = indexOf(searchWord.charAt(i));
-            var newNode = currentNode.children[childIndex];
+        int childIndex = indexOf(searchWord.charAt(nextCharacterIndex));
 
-            if (newNode == null) {
-                // character at index 'i' doesn't match with 'currentNode', so this is our mistake
-                // now let's look into every child for an exact match
-                final int newStartAt = i + 1;
+        for (int i = 0; i < ALPHABET_SIZE; i++) {
+            var node = currentNode.children[i];
 
-                final var exactMatch = currentNode.nonNullChildren()
-                        .anyMatch(
-                                child -> searchExact(
-                                        searchWord,
-                                        newStartAt,
-                                        child
-                                ) != null
-                        );
-
-                if (exactMatch) {
+            if (i == childIndex) {
+                if (node != null) {
+                    if (searchInternal(searchWord, nextCharacterIndex + 1, node)) {
+                        return true;
+                    }
+                }
+            } else {
+                if (searchExact(searchWord, nextCharacterIndex + 1, node) != null) {
                     return true;
-                } else {
-
                 }
             }
-
-            currentNode = newNode;
         }
 
         return false;
@@ -72,6 +64,10 @@ public class MagicDictionary {
      * Returns the trie node representing the searched word, null if not found.
      */
     private TrieNode searchExact(String searchWord, int startAt, TrieNode startAtNode) {
+        if (startAtNode == null) {
+            return null;
+        }
+
         var currentNode = startAtNode;
 
         for (int i = startAt; i < searchWord.length(); i++) {
