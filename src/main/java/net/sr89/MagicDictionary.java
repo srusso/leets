@@ -89,8 +89,12 @@ public class MagicDictionary {
             int childIndex = indexOf(word.charAt(i));
             var cNode = currentNode.children[childIndex];
 
+            final var isInDictionary = i == word.length() - 1;
+
             if (cNode == null) {
-                currentNode.children[childIndex] = newTerminalNode(i == word.length() - 1);
+                currentNode.children[childIndex] = newTerminalNode(isInDictionary);
+            } else {
+                currentNode.children[childIndex].isInDictionary |= isInDictionary;
             }
 
             currentNode = currentNode.children[childIndex];

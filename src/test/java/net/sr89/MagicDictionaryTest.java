@@ -1,5 +1,7 @@
 package net.sr89;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -10,9 +12,29 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MagicDictionaryTest {
-    final MagicDictionary solution = new MagicDictionary();
+    MagicDictionary solution;
+
+    @BeforeEach
+    void setUp() {
+        solution = new MagicDictionary();
+    }
+
+    @Test
+    void testOrdering1() {
+        solution.buildDict(new String[]{"fobyndk", "fo"});
+
+        assertTrue(solution.search("bo"));
+    }
+
+    @Test
+    void testOrdering2() {
+        solution.buildDict(new String[]{"fo", "fobyndk"});
+
+        assertTrue(solution.search("bo"));
+    }
 
     @ParameterizedTest
     @MethodSource("testCases")
@@ -47,6 +69,11 @@ class MagicDictionaryTest {
                                 "hhllo", true,
                                 "hell", false,
                                 "leetcoded", false
+                        )),
+                Arguments.of(
+                        Set.of("fo", "fobyndk"),
+                        Map.of(
+                                "bo", true
                         )),
                 Arguments.of(
                         Set.of("hqcefkkdtxvkokxupqheffemlcettmgmybmcjqd", "tqvuevvcqdbyganadubbzprtadbigvcbydwlwppklqqdmewfphkltyfvtlfwdmgfpslozkcmwelqmkrzwoldycmmccewecrwpvs", "figvqvkohvkiihihmdqpezubuqdjxenwzzrujkclpcyvdvhrdelhn", "fobyndkctmahjpjhiyaalgwovlxettyojlwudhhtdvasfdzypryz", "afqfkmxmtoficmaekaldghcbovyqoaajwrognzcsymlmuqiqqcawjklybteamknzpazhokofsfgwxjnindi", "hzwykjriueezwmnmyvxafchqicaqnbqrbsqnvmuaarlamzgwbt", "opvfxeqrijhxodcocboalfkjswpnxpykcltbucskwqokvabcpnncyxqknqaukwlsyfcymjopy", "svndbqiznkpayoqwqfrbkghvywzijxsxguzrzacnxldspwhtyvslyfkrfvxnwfqtwzkbgn", "svegroaaeymtrykymumvplqzxwsefkeslfwguaagiffegfsgsjudeocqfejruuyydmrkoemhfpgraslgyrkcfphmhwhrdwrle", "iigozeamuhmubqncozsztszzeagyghbwlhzdck", "kyqqcc", "wbvtywlnkdccmmkmpckergvuruaddvkpmsqrvtitjfzsecp", "fo", "ylnvlngvebfnng", "slpheqzaptkoubtviwnmjhtvfcsreysiuzpylkdnzznlaxutigpptqeqifqjhrftnfns", "ykqehgfczn", "tcqxjvavirvzukhyhjnwykuzyarrlrmaycxemqhgzemokoypmil", "uprqmgudyfefasmbqywvcugdqujijzsuboifgbktbgxswbrlxbiuvbogdqyzfxnvmmifrosruzvdrhtlxfwfzjikvplvwh", "memyndggyvsqjdntrgxecgrkmcmrkkfjdasxhgr", "lnahczutqyhwumbapructp", "motrdfychlrurepgnqvprhunwiwmrhajatpxjjdvdtmtexiwmksvbtdnzqqftrnzqdscpepkyjdsgmeqdztrl", "vedyymdprufufokvxwdaoaiidzighghuryoineyycrhdxrdkxdgmaahq", "fizycbajzqifsjtrzymoenxrkgsrxgrblmzentdui", "jqgzwm", "rnxqkwyridhfwlgkdrmgxcoodqnkauplbhuxmmwgocnoumtemebikopkq", "maepukvxnieiudrguuvjqefwcpopxezjaxzeaqramwmchbvvpwjmcjaknqbjfxjonjmghpudqcckxmfrxzdjeqmgmitxpc", "uvakofoanddmrunpbwyqxhlrdarkohxphvtvckdnmfplpjuxogwsgrwvftyaawlwtftzzmfbeubkpnysyvd", "aipwbfwavlkkkicuyvuweojuqsiulnchunbobpohrkujnekegegvylnvgcahckwnurtmxkmutdmikorjmguqxkd", "mjzdcybukypmqhqgpjqfr", "dxbvdcxvemjkujnpjqfeigejzgkfsowxegbrrlseylxczbxvrzlnymopgyvlzmyannsgxjnvguosgeimauym", "zignfufvuereucrzbzhinoqbyegnntsfpgewzrssbgag", "evyeskltiibijggujjjmxyetqyfpowpfvauiuzwzfsujmlevgaqzd", "tlovkhoxtmxzlnoqzvtyuxekjyolh", "dqibutwieciegwazbylekyvhnepwlwrsjcdupiivnfbyudwrcytefrtckzwbvqexdpvjwhqdfjcjhxyfpljyupdjdslstxwzajf", "rmuawruoozzgkhavbrfguqukjpqgcrttbcwkwyvfannqkkdwmakjkwynmftcsirrriwuovdmanobrmvafwllihw", "lciuhohzmlpknvxcnvutukbhyeqzlopspkopefoacwnfgvdvywuepvbkbxverqwfqmmqelrffdzcojelnhfagbhuiuaqzdokt", "ikaczbhltbtvybhuoegdtbfhmelxhcepbiegursieuhjrjvcsjdynpljumxfzvuxzahmnfrvdfwdngcmwzzzcpynjanxffwsjit", "kevxuounfbplmpgesdcrsogibccvnxzogntxhzmmnjomadkchlmyhrkwuivcphgrgot", "vqbajkmysnlowqgcuqfbfsgidnlrattafbqemcnnbejnykhxxopexfzlqnwlboparbgfajnhjian", "mldnittgqyngzcwumffnjkmnwerryligmoihinxrapdjsfwufsleatlxlfrookaivdvxy", "ckbaywevzrayotbyugvvlyrptjetekrkudclafrqkzyocndxodmjkyqcwxxicuomppifqhdcoguzzmppn", "sbbagyuhzuvywflbirezefxxeo", "yyhrkjdngsyfcrqlgkyqcqkchhxqwjspgnrxwubhaetmxfmhwevlefgabozliipxgxxloq", "bixqbrljjijkwypdoicofvjavoqyuznapiqwmrxbbvmu", "bbuqcrvyyauhyeafjyahheklalhasbohbossoivhyivjknlfi", "hxkvflrwafqgjrbnkgbginxusbzzjospayoclavlhupaqghanqvygxahzzyspyued", "ybsemhouwzsgoqagiynodiayeaengqedtqobhyupmafjgxnvfdhfrephtaqedjkvjwnfulx", "fszdvdripirczluoahwktyozjqyhwllnppjhgyoycunjkuiqldmmpxezsigxmcjveinlqnpjhkxfbhuelhkvrknl", "wwactkdvlzzelfmxhycjgbmdzmptrclhxhvdnfjxzuhnoebjcdqktxamshdrqzjhhj", "qckjulixfmlezxaompowzzzzammrblsziuwsksjzfoyieeapxkqrxznlxiyiahxosoqauivkygzehhikzi", "ytajkptmjwjkbehixuxuioj", "bslhokzotyjhgeodrnkd", "trg", "iyoqrzttwixxrikrm"),
