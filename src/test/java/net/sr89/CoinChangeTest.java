@@ -22,7 +22,8 @@ public class CoinChangeTest {
                 Arguments.of(3, new int[]{1, 2, 5}, 11),
                 Arguments.of(2, new int[]{1}, 2),
                 Arguments.of(1, new int[]{1, 2}, 2),
-                Arguments.of(3, new int[]{1, 3, 5}, 7)
+                Arguments.of(3, new int[]{1, 3, 5}, 7),
+                Arguments.of(35, new int[]{357,239,73,52}, 9832)
         );
     }
 }

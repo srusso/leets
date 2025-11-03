@@ -25,10 +25,11 @@ public class CoinChange {
         }
 
         for (int i = 1; i <= amount; i++) {
-            for (int j = 1; j < i ; j++) {
-                int iSolution = dp.getOrDefault(j, -1);
-                if (iSolution == -1) {
-                    break;
+            final int upper = i / 2 + 1;
+            for (int j = 1; j < upper; j++) {
+                int jSolution = dp.getOrDefault(j, -1);
+                if (jSolution == -1) {
+                    continue;
                 }
                 int remaining = i - j;
                 int remainingSolution = dp.getOrDefault(remaining, -1);
@@ -36,7 +37,7 @@ public class CoinChange {
                     continue;
                 }
                 dp.compute(i, (_, value) ->
-                        Math.min(value == null ? Integer.MAX_VALUE : value, iSolution + remainingSolution));
+                        Math.min(value == null ? Integer.MAX_VALUE : value, jSolution + remainingSolution));
             }
         }
 
