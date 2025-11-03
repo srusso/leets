@@ -19,12 +19,6 @@ public class CoinChange {
             dp.put(coin, 1);
         }
 
-        dp.put(0, 0);
-
-        if (amount == 2) {
-            return dp.containsKey(2) ? 1 : dp.containsKey(1) ? 2 : -1;
-        }
-
         for (int i = 1; i <= amount; i++) {
             for (int coin : coins) {
                 int j = i - coin;
