@@ -1,5 +1,6 @@
 package net.sr89;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,8 +26,8 @@ public class CoinChange {
         }
 
         for (int i = 1; i <= amount; i++) {
-            final int upper = i / 2 + 1;
-            for (int j = 1; j < upper; j++) {
+            for (int coin : coins) {
+                int j = i - coin;
                 int jSolution = dp.getOrDefault(j, -1);
                 if (jSolution == -1) {
                     continue;
