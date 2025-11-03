@@ -28,7 +28,7 @@ public class CoinChange {
             for (int j = 1; j < i ; j++) {
                 int iSolution = dp.getOrDefault(j, -1);
                 if (iSolution == -1) {
-                    continue;
+                    break;
                 }
                 int remaining = i - j;
                 int remainingSolution = dp.getOrDefault(remaining, -1);
