@@ -24,22 +24,19 @@ public class CoinChange {
             return dp.containsKey(2) ? 1 : dp.containsKey(1) ? 2 : -1;
         }
 
-        for (int i = 1 ; i <= amount ; i++) {
-            for (int j = i - 1 ; j > 1 ; j--) {
-                int jSolution = dp.getOrDefault(j, -1);
-                if (jSolution == -1) {
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 1; j < i ; j++) {
+                int iSolution = dp.getOrDefault(j, -1);
+                if (iSolution == -1) {
                     continue;
                 }
                 int remaining = i - j;
-                for (int coin : coins) {
-                    if (remaining % coin == 0) {
-                        int iSolution = Math.min(
-                                dp.getOrDefault(i, Integer.MAX_VALUE),
-                                jSolution + (remaining / coin)
-                        );
-                        dp.put(i, iSolution);
-                    }
+                int remainingSolution = dp.getOrDefault(remaining, -1);
+                if (remainingSolution == -1) {
+                    continue;
                 }
+                dp.compute(i, (_, value) ->
+                        Math.min(value == null ? Integer.MAX_VALUE : value, iSolution + remainingSolution));
             }
         }
 
