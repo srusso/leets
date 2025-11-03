@@ -1,8 +1,5 @@
 package net.sr89;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * <a href="https://leetcode.com/problems/coin-change/">Leetcode link</a>
  */
@@ -12,24 +9,28 @@ public class CoinChange {
             return 0;
         }
 
-        Map<Integer, Integer> dp = new HashMap<>();
+        int [] dp = new int[10001];
 
         for (int coin : coins) {
-            dp.put(coin, 1);
-        }
-
-        for (int curentAmount = 1; curentAmount <= amount; curentAmount++) {
-            for (int coin : coins) {
-                int currentAmountMinusCoin = curentAmount - coin;
-                int currentAmountMinusCoinSolution = dp.getOrDefault(currentAmountMinusCoin, -1);
-                if (currentAmountMinusCoinSolution == -1) {
-                    continue;
-                }
-                dp.compute(curentAmount, (_, value) ->
-                        Math.min(value == null ? Integer.MAX_VALUE : value, currentAmountMinusCoinSolution + 1));
+            if (coin < dp.length) {
+                dp[coin] = 1;
             }
         }
 
-        return dp.getOrDefault(amount, -1);
+        for (int currentAmount = 1; currentAmount <= amount; currentAmount++) {
+            for (int coin : coins) {
+                int currentAmountMinusCoin = currentAmount - coin;
+                if (currentAmountMinusCoin < 0) {
+                    continue;
+                }
+                int currentAmountMinusCoinSolution = dp[currentAmountMinusCoin];
+                if (currentAmountMinusCoinSolution == 0) {
+                    continue;
+                }
+                dp[currentAmount] = Math.min(dp[currentAmount] == 0 ? Integer.MAX_VALUE : dp[currentAmount], currentAmountMinusCoinSolution + 1);
+            }
+        }
+
+        return dp[amount] == 0 ? -1 : dp[amount];
     }
 }
