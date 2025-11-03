@@ -26,7 +26,10 @@ public class CoinChange {
 
         for (int i = 1 ; i <= amount ; i++) {
             for (int j = i - 1 ; j > 1 ; j--) {
-                int jSolution = dp.getOrDefault(j, 0);
+                int jSolution = dp.getOrDefault(j, -1);
+                if (jSolution == -1) {
+                    continue;
+                }
                 int remaining = i - j;
                 for (int coin : coins) {
                     if (remaining % coin == 0) {
