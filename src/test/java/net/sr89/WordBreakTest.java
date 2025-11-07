@@ -20,7 +20,10 @@ class WordBreakTest {
 
     private static Stream<Arguments> testCases() {
         return Stream.of(
-                Arguments.of(true, "leetcode", List.of("leet", "code"))
+                Arguments.of(true, "leetcode", List.of("leet", "code")),
+                Arguments.of(true, "applepenapple", List.of("apple", "pen")),
+                Arguments.of(false, "catsandog", List.of("cats", "dog", "sand", "and", "cat")),
+                Arguments.of(false, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", List.of("a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa", "aaaaaaaaa", "aaaaaaaaaa"))
         );
     }
 }
