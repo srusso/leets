@@ -1,40 +1,31 @@
 package net.sr89;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Set;
 
 /**
  * <a href="https://leetcode.com/problems/max-area-of-island/">Leetcode link</a>
  */
 public class MaxAreaOfIsland {
-    Set<Set<Point>> islands = new HashSet<>();
-    int maxIsland = 0;
-
     public int maxAreaOfIsland(int[][] grid) {
-        islands = new HashSet<>();
-        maxIsland = 0;
+        int maxIsland = 0;
 
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
                 Point point = new Point(i, j);
-                if (isWater(grid, point) || isAlreadyExplored(grid, point)) {
+                if (isWater(grid, point)) {
                     continue;
                 }
 
-                Set<Point> newIsland = exploreIsland(grid, point);
-                islands.add(newIsland);
-                maxIsland = Math.max(maxIsland, newIsland.size());
-                System.out.println("New island: " + newIsland);
+                maxIsland = Math.max(maxIsland, exploreIsland(grid, point));
             }
         }
 
         return maxIsland;
     }
 
-    private Set<Point> exploreIsland(int[][] grid, Point startingPoint) {
-        Set<Point> island = new HashSet<>();
+    private int exploreIsland(int[][] grid, Point startingPoint) {
+        int size = 0;
 
         Queue<Point> pointsToExplore = new LinkedList<>();
         pointsToExplore.add(startingPoint);
@@ -42,9 +33,9 @@ public class MaxAreaOfIsland {
         while (!pointsToExplore.isEmpty()) {
             Point point = pointsToExplore.poll();
 
-            if (isWithinBounds(grid, point) && !isWater(grid, point) && !isAlreadyExplored(grid, point)) {
-                island.add(point);
-                grid[point.i][point.j] = -1;
+            if (isWithinBounds(grid, point) && !isWater(grid, point)) {
+                size++;
+                grid[point.i][point.j] = 0;
 
                 pointsToExplore.add(point.up());
                 pointsToExplore.add(point.down());
@@ -53,11 +44,7 @@ public class MaxAreaOfIsland {
             }
         }
 
-        return island;
-    }
-
-    private boolean isAlreadyExplored(int[][] grid, Point point) {
-        return grid[point.i][point.j] == -1;
+        return size;
     }
 
     private boolean isWithinBounds(int[][] grid, Point point) {
