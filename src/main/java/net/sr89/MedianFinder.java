@@ -4,6 +4,9 @@ package net.sr89;
  * <a href="https://leetcode.com/problems/find-median-from-data-stream">Leetcode link</a>.
  * <p>
  * The "proper" solution uses two priority queues; let's have some fun with arrays.
+ * <p>
+ * This implementation becomes more efficient the more data is added to the structure, since the moveToNext and moveToPrevious
+ * methods have to travel less the more the structure is populated.
  */
 class MedianFinder {
     // leetcode says each number is between -10^5 and 10^5.
