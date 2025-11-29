@@ -113,36 +113,39 @@ class MedianFinder {
         }
     }
 
-    private void moveToNext() {
-        if (currentMedianPointer == numbers[currentMedian]) {
-            currentMedianPointer = 1;
-
-            for (int i = currentMedian + 1; i < numbers.length; i++) {
+    private int findPrevious() {
+        if (currentMedianPointer == 1) {
+            for (int i = currentMedian - 1; i > 0; i--) {
                 if (numbers[i] > 0) {
-                    currentMedian = i;
-                    return;
+                    return i;
                 }
             }
 
             throw new RuntimeException();
         } else {
+            return currentMedian;
+        }
+    }
+
+    private void moveToNext() {
+        final int nextMedian = findNext();
+
+        if (nextMedian == currentMedian) {
             currentMedianPointer++;
+        } else {
+            currentMedian = nextMedian;
+            currentMedianPointer = 1;
         }
     }
 
     private void moveToPrevious() {
-        if (currentMedianPointer == 1) {
-            for (int i = currentMedian - 1; i > 0; i--) {
-                if (numbers[i] > 0) {
-                    currentMedian = i;
-                    currentMedianPointer = numbers[i];
-                    return;
-                }
-            }
+        final int previous = findPrevious();
 
-            throw new RuntimeException();
-        } else {
+        if (previous == currentMedian) {
             currentMedianPointer--;
+        } else {
+            currentMedian = previous;
+            currentMedianPointer = numbers[currentMedian];
         }
     }
 
