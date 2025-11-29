@@ -44,15 +44,6 @@ class MedianFinderTest {
         MedianFinder solution = new MedianFinder();
         Arrays.stream(new int[]{5, 3, 2, -4, 7, 1, 1})
                 .forEach(solution::addNum);
-        // add smaller
-        // -4 2 3m 5 7  odd
-        // -4 1 2m 3m 5 7  even, went back
-        // -4 1 1 2m 3 5 7  odd, did not move
-
-        // add bigger
-        // -4 2 3m 5 7  odd
-        // -4 2 3m 5m 5 7  even, did not move
-        // -4 2 3 5m 5 5 7  odd, went forward
 
         assertEquals(2, solution.findMedian());
     }
@@ -77,20 +68,15 @@ class MedianFinderTest {
             throw new RuntimeException("Size differs");
         }
 
-        int totalAdded = 0;
-
         for (int i = 0; i < size; i++) {
             final var command = commands.get(i);
             final var argument = arguments.get(i);
 
             if (command.equals("addNum")) {
                 solution.addNum(argument);
-                totalAdded++;
-                System.out.println("Added " + argument);
             } else if (command.equals("findMedian")) {
                 final var expectedMedian = expected.get(i);
                 final var median = solution.findMedian();
-                System.out.println("After adding " + totalAdded + " numbers. Expected: " + expectedMedian + ", actual: " + median);
                 assertEquals(expectedMedian, median, 0.001D);
             } else {
                 throw new IllegalArgumentException("Unrecognized command " + command);
