@@ -1,12 +1,12 @@
 package net.sr89;
 
 class MedianFinder {
-    final int tenToTheFifth = 20;
+    final int tenToTheFifth = 100000;
 
     // keeps a count of how many times a number was encountered.
     // i.e. numbers[108866] is how many times we encountered the number 108866
     // (not adjusting for the negative offset, number 0 is actually stored at index 100000 etc.)
-    final int[] numbers = new int[40];
+    final int[] numbers = new int[200005];
 
     // how many numbers we met so far
     int total = 0;
