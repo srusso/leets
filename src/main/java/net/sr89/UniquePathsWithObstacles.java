@@ -4,6 +4,10 @@ import java.util.Arrays;
 
 public class UniquePathsWithObstacles {
     public int uniquePathsWithObstacles(int[][] grid) {
+        if (grid[0][0] == 1) {
+            return 0;
+        }
+
         initGrid(grid);
 
         for (int i = 1; i < grid.length; i++) {
