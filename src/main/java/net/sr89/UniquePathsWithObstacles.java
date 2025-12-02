@@ -1,7 +1,5 @@
 package net.sr89;
 
-import java.util.Arrays;
-
 public class UniquePathsWithObstacles {
     public int uniquePathsWithObstacles(int[][] grid) {
         if (grid[0][0] == 1) {
