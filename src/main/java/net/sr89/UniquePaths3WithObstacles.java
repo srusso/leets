@@ -12,7 +12,7 @@ public class UniquePaths3WithObstacles {
     private static final int VISITED_END = VISITED + END;
 
     int obstacles;
-    int [][] grid;
+    int[][] grid;
 
     public int uniquePathsIII(int[][] grid) {
         this.grid = grid;
@@ -24,8 +24,13 @@ public class UniquePaths3WithObstacles {
     }
 
     private int uniquePathsIII(int x, int y, int visited) {
-        if (grid[x][y] == VISITED_END && visited == (grid.length * grid[0].length - obstacles)) {
-            return 1;
+        if (grid[x][y] == VISITED_END) {
+            if (visited == (grid.length * grid[0].length - obstacles)) {
+                return 1;
+            } else {
+                // break early if you meet the end without having visited every other location first
+                return 0;
+            }
         }
 
         int total = 0;
