@@ -1,7 +1,5 @@
 package net.sr89;
 
-import java.util.stream.Stream;
-
 /**
  * <a href="https://leetcode.com/problems/unique-paths-iii/description/">Leetcode link</a>
  */
@@ -20,41 +18,72 @@ public class UniquePaths3WithObstacles {
         this.grid = grid;
         Point start = findStartingPoint();
 
-        start.set(grid, VISITED);
+        grid[start.x][start.y] = VISITED;
 
-        return uniquePathsIII(start, 1);
+        return uniquePathsIII(start.x, start.y, 1);
     }
 
-    private int uniquePathsIII(Point current, int visited) {
-        if (current.at(grid) == VISITED_END && visited == (grid.length * grid[0].length - obstacles)) {
+    private int uniquePathsIII(int x, int y, int visited) {
+        if (grid[x][y] == VISITED_END && visited == (grid.length * grid[0].length - obstacles)) {
             return 1;
         }
 
-        return Stream.of(current.up(), current.down(), current.left(), current.right())
-                .mapToInt(nextPoint -> {
-                    if (canVisit(nextPoint)) {
-                        int status = nextPoint.at(grid);
-                        if (status == END) {
-                            nextPoint.set(grid, VISITED_END);
-                        } else {
-                            nextPoint.set(grid, VISITED);
-                        }
-                        int pathsToGoal = uniquePathsIII(nextPoint, visited + 1);
-                        nextPoint.set(grid, status);
-                        return pathsToGoal;
-                    } else {
-                        return 0;
-                    }
-                }).sum();
+        int total = 0;
+
+        if (canVisit(x - 1, y)) {
+            int status = grid[x - 1][y];
+            if (status == END) {
+                grid[x - 1][y] = VISITED_END;
+            } else {
+                grid[x - 1][y] = VISITED;
+            }
+            total += uniquePathsIII(x - 1, y, visited + 1);
+            grid[x - 1][y] = status;
+        }
+
+        if (canVisit(x + 1, y)) {
+            int status = grid[x + 1][y];
+            if (status == END) {
+                grid[x + 1][y] = VISITED_END;
+            } else {
+                grid[x + 1][y] = VISITED;
+            }
+            total += uniquePathsIII(x + 1, y, visited + 1);
+            grid[x + 1][y] = status;
+        }
+
+        if (canVisit(x, y - 1)) {
+            int status = grid[x][y - 1];
+            if (status == END) {
+                grid[x][y - 1] = VISITED_END;
+            } else {
+                grid[x][y - 1] = VISITED;
+            }
+            total += uniquePathsIII(x, y - 1, visited + 1);
+            grid[x][y - 1] = status;
+        }
+
+        if (canVisit(x, y + 1)) {
+            int status = grid[x][y + 1];
+            if (status == END) {
+                grid[x][y + 1] = VISITED_END;
+            } else {
+                grid[x][y + 1] = VISITED;
+            }
+            total += uniquePathsIII(x, y + 1, visited + 1);
+            grid[x][y + 1] = status;
+        }
+
+        return total;
     }
 
-    private boolean canVisit(Point point) {
-        return isWithinBounds(point)
-                && (point.at(grid) == EMPTY || point.at(grid) == END);
+    private boolean canVisit(int x, int y) {
+        return isWithinBounds(x, y)
+                && (grid[x][y] == EMPTY || grid[x][y] == END);
     }
 
-    private boolean isWithinBounds(Point point) {
-        return point.x < grid.length && point.x >= 0 && point.y >= 0 && point.y < grid[0].length;
+    private boolean isWithinBounds(int x, int y) {
+        return x < grid.length && x >= 0 && y >= 0 && y < grid[0].length;
     }
 
     private Point findStartingPoint() {
@@ -74,28 +103,5 @@ public class UniquePaths3WithObstacles {
     }
 
     private record Point(int x, int y) {
-        private Point up() {
-            return new Point(x - 1, y);
-        }
-
-        private Point down() {
-            return new Point(x + 1, y);
-        }
-
-        private Point left() {
-            return new Point(x, y - 1);
-        }
-
-        private Point right() {
-            return new Point(x, y + 1);
-        }
-
-        public int at(int[][] grid) {
-            return grid[x][y];
-        }
-
-        public void set(int [][] grid, int status) {
-            grid[x][y] = status;
-        }
     }
 }
