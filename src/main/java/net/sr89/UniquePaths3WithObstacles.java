@@ -38,7 +38,7 @@ public class UniquePaths3WithObstacles {
     }
 
     private int uniquePathsIII(int[][] grid, Point current, Set<Point> visited, int obstacles) {
-        if (current.of(grid) == END && visited.size() == (grid.length * grid[0].length - obstacles)) {
+        if (current.at(grid) == END && visited.size() == (grid.length * grid[0].length - obstacles)) {
             System.out.println("Found path!");
             return 1;
         }
@@ -58,7 +58,7 @@ public class UniquePaths3WithObstacles {
 
     private boolean canVisit(int[][] grid, Point point, Set<Point> visited) {
         return isWithinBounds(grid, point)
-                && (point.of(grid) == EMPTY || point.of(grid) == END)
+                && (point.at(grid) == EMPTY || point.at(grid) == END)
                 && !visited.contains(point);
     }
 
@@ -95,7 +95,7 @@ public class UniquePaths3WithObstacles {
             return new Point(x, y + 1);
         }
 
-        public int of(int[][] grid) {
+        public int at(int[][] grid) {
             return grid[x][y];
         }
     }
