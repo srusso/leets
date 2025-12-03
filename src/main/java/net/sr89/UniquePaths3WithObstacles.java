@@ -61,8 +61,7 @@ public class UniquePaths3WithObstacles {
 
     private boolean canVisit(int[][] grid, Point point) {
         return isWithinBounds(grid, point)
-                && (point.at(grid) == EMPTY || point.at(grid) == END)
-                && point.at(grid) != VISITED;
+                && (point.at(grid) == EMPTY || point.at(grid) == END);
     }
 
     private boolean isWithinBounds(int[][] grid, Point point) {
