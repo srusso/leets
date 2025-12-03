@@ -1,7 +1,5 @@
 package net.sr89;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -12,23 +10,24 @@ public class UniquePaths3WithObstacles {
     private static final int START = 1;
     private static final int END = 2;
     private static final int OBSTACLE = -1;
+    private static final int VISITED = 3;
+    private static final int VISITED_END = VISITED + END;
 
     public int uniquePathsIII(int[][] grid) {
         Point start = findStartingPoint(grid);
         int obstacles = countObstacles(grid);
 
-        HashSet<Point> visited = new HashSet<>();
-        visited.add(start);
+        start.set(grid, VISITED);
 
-        return uniquePathsIII(grid, start, visited, obstacles);
+        return uniquePathsIII(grid, start, 1, obstacles);
     }
 
     private int countObstacles(int[][] grid) {
         int count = 0;
 
-        for (int i = 0; i < grid.length; i++) {
+        for (int[] row : grid) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] == OBSTACLE) {
+                if (row[j] == OBSTACLE) {
                     count++;
                 }
             }
@@ -37,18 +36,22 @@ public class UniquePaths3WithObstacles {
         return count;
     }
 
-    private int uniquePathsIII(int[][] grid, Point current, Set<Point> visited, int obstacles) {
-        if (current.at(grid) == END && visited.size() == (grid.length * grid[0].length - obstacles)) {
-            System.out.println("Found path!");
+    private int uniquePathsIII(int[][] grid, Point current, int visited, int obstacles) {
+        if (current.at(grid) == VISITED_END && visited == (grid.length * grid[0].length - obstacles)) {
             return 1;
         }
 
         return Stream.of(current.up(), current.down(), current.left(), current.right())
                 .mapToInt(nextPoint -> {
-                    if (canVisit(grid, nextPoint, visited)) {
-                        visited.add(nextPoint);
-                        int pathsToGoal = uniquePathsIII(grid, nextPoint, visited, obstacles);
-                        visited.remove(nextPoint);
+                    if (canVisit(grid, nextPoint)) {
+                        int status = nextPoint.at(grid);
+                        if (status == END) {
+                            nextPoint.set(grid, VISITED_END);
+                        } else {
+                            nextPoint.set(grid, VISITED);
+                        }
+                        int pathsToGoal = uniquePathsIII(grid, nextPoint, visited + 1, obstacles);
+                        nextPoint.set(grid, status);
                         return pathsToGoal;
                     } else {
                         return 0;
@@ -56,10 +59,10 @@ public class UniquePaths3WithObstacles {
                 }).sum();
     }
 
-    private boolean canVisit(int[][] grid, Point point, Set<Point> visited) {
+    private boolean canVisit(int[][] grid, Point point) {
         return isWithinBounds(grid, point)
                 && (point.at(grid) == EMPTY || point.at(grid) == END)
-                && !visited.contains(point);
+                && point.at(grid) != VISITED;
     }
 
     private boolean isWithinBounds(int[][] grid, Point point) {
@@ -97,6 +100,10 @@ public class UniquePaths3WithObstacles {
 
         public int at(int[][] grid) {
             return grid[x][y];
+        }
+
+        public void set(int [][] grid, int status) {
+            grid[x][y] = status;
         }
     }
 }

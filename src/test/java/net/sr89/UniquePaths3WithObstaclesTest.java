@@ -22,13 +22,17 @@ class UniquePaths3WithObstaclesTest {
                 Arguments.of(
                         2,
                         new int[][]{
-                                {1, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 2, -1}
+                                {1, 0, 0, 0},
+                                {0, 0, 0, 0},
+                                {0, 0, 2, -1}
                         }
                 ),
                 Arguments.of(
                         4,
                         new int[][]{
-                                {1, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 2}
+                                {1, 0, 0, 0},
+                                {0, 0, 0, 0},
+                                {0, 0, 0, 2}
                         }
                 ),
                 Arguments.of(
