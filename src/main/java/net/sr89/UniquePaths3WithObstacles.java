@@ -13,44 +13,33 @@ public class UniquePaths3WithObstacles {
     private static final int VISITED = 3;
     private static final int VISITED_END = VISITED + END;
 
+    int obstacles;
+    int [][] grid;
+
     public int uniquePathsIII(int[][] grid) {
-        Point start = findStartingPoint(grid);
-        int obstacles = countObstacles(grid);
+        this.grid = grid;
+        Point start = findStartingPoint();
 
         start.set(grid, VISITED);
 
-        return uniquePathsIII(grid, start, 1, obstacles);
+        return uniquePathsIII(start, 1);
     }
 
-    private int countObstacles(int[][] grid) {
-        int count = 0;
-
-        for (int[] row : grid) {
-            for (int j = 0; j < grid[0].length; j++) {
-                if (row[j] == OBSTACLE) {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
-
-    private int uniquePathsIII(int[][] grid, Point current, int visited, int obstacles) {
+    private int uniquePathsIII(Point current, int visited) {
         if (current.at(grid) == VISITED_END && visited == (grid.length * grid[0].length - obstacles)) {
             return 1;
         }
 
         return Stream.of(current.up(), current.down(), current.left(), current.right())
                 .mapToInt(nextPoint -> {
-                    if (canVisit(grid, nextPoint)) {
+                    if (canVisit(nextPoint)) {
                         int status = nextPoint.at(grid);
                         if (status == END) {
                             nextPoint.set(grid, VISITED_END);
                         } else {
                             nextPoint.set(grid, VISITED);
                         }
-                        int pathsToGoal = uniquePathsIII(grid, nextPoint, visited + 1, obstacles);
+                        int pathsToGoal = uniquePathsIII(nextPoint, visited + 1);
                         nextPoint.set(grid, status);
                         return pathsToGoal;
                     } else {
@@ -59,25 +48,29 @@ public class UniquePaths3WithObstacles {
                 }).sum();
     }
 
-    private boolean canVisit(int[][] grid, Point point) {
-        return isWithinBounds(grid, point)
+    private boolean canVisit(Point point) {
+        return isWithinBounds(point)
                 && (point.at(grid) == EMPTY || point.at(grid) == END);
     }
 
-    private boolean isWithinBounds(int[][] grid, Point point) {
+    private boolean isWithinBounds(Point point) {
         return point.x < grid.length && point.x >= 0 && point.y >= 0 && point.y < grid[0].length;
     }
 
-    private Point findStartingPoint(int[][] grid) {
+    private Point findStartingPoint() {
+        Point start = null;
+
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
                 if (grid[i][j] == START) {
-                    return new Point(i, j);
+                    start = new Point(i, j);
+                } else if (grid[i][j] == OBSTACLE) {
+                    obstacles++;
                 }
             }
         }
 
-        throw new RuntimeException();
+        return start;
     }
 
     private record Point(int x, int y) {
