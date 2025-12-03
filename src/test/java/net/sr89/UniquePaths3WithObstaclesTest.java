@@ -14,7 +14,7 @@ class UniquePaths3WithObstaclesTest {
     @ParameterizedTest
     @MethodSource("testCases")
     void runTests(int expected, int[][] grid) {
-        assertEquals(expected, solution.uniquePathsWithObstacles(grid));
+        assertEquals(expected, solution.uniquePathsIII(grid));
     }
 
     private static Stream<Arguments> testCases() {
