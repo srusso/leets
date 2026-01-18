@@ -42,19 +42,12 @@ public class PartitionEqualSubsetSum {
         if (newSum == wantedSum) {
             return true;
         } else if (newSum < wantedSum) {
-            final boolean currentSumResult = canPartitionRec(nums, wantedSum, currentSum, nextIdx + 1);
-            if (currentSumResult) {
-                return true;
-            } else {
+            final boolean result = canPartitionRec(nums, wantedSum, currentSum, nextIdx + 1)
+                    || canPartitionRec(nums, wantedSum, newSum, nextIdx + 1);
+            if (!result) {
                 failed.add(new Pair(nextIdx, currentSum));
             }
-            final boolean newSumResult = canPartitionRec(nums, wantedSum, newSum, nextIdx + 1);
-            if (newSumResult) {
-                return true;
-            } else {
-                failed.add(new Pair(nextIdx, currentSum));
-            }
-            return false;
+            return result;
         } else {
             final boolean currentSumResult = canPartitionRec(nums, wantedSum, currentSum, nextIdx + 1);
             if (currentSumResult) {
