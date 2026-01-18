@@ -15,7 +15,13 @@ class PartitionEqualSubsetSumTest {
     @ParameterizedTest
     @MethodSource("testCases")
     void runTests(boolean expected, int[] nums) {
-        assertEquals(expected, solution.canPartitionRecursive(nums));
+        assertEquals(expected, solution.canPartition(nums));
+    }
+
+    @ParameterizedTest
+    @MethodSource("slowTestCases")
+    void runSlowTests(boolean expected, int[] nums) {
+        assertEquals(expected, solution.canPartition(nums));
     }
 
     private static Stream<Arguments> testCases() {
@@ -26,10 +32,15 @@ class PartitionEqualSubsetSumTest {
                 // 3 6 8 16 20
                 // 3 16 16 18
                 Arguments.of(true, new int[]{3, 3, 6, 8, 16, 16, 16, 18, 20}),
-                Arguments.of(true, repeat(200, 1)),
-                Arguments.of(false, repeat(201, 1)),
                 Arguments.of(false, new int[]{1, 1, 1}),
                 Arguments.of(false, new int[]{1, 2, 3, 5})
+        );
+    }
+
+    private static Stream<Arguments> slowTestCases() {
+        return Stream.of(
+                Arguments.of(true, repeat(200, 1)),
+                Arguments.of(false, repeat(21, 1))
         );
     }
 
