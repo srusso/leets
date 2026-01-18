@@ -19,8 +19,10 @@ class PartitionEqualSubsetSumTest {
 
     private static Stream<Arguments> testCases() {
         return Stream.of(
-                Arguments.of(true, new int[]{1,5,11,5}),
-                Arguments.of(false, new int[]{1,2,3,5})
+                Arguments.of(true, new int[]{1, 5, 11, 5}),
+                Arguments.of(true, new int[]{1, 1}),
+                Arguments.of(false, new int[]{1, 1, 1}),
+                Arguments.of(false, new int[]{1, 2, 3, 5})
         );
     }
 
