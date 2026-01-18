@@ -8,13 +8,10 @@ import java.util.Set;
  * https://leetcode.com/problems/partition-equal-subset-sum/
  */
 public class PartitionEqualSubsetSum {
-    private record Pair(int idx, int sum) {
-    }
-
-    private Set<Pair> failed;
+    private Set<Integer>[] failed;
 
     public boolean canPartition(int[] nums) {
-        failed = new HashSet<>();
+        failed = new Set[200];
 
         final int total = Arrays.stream(nums).sum();
 
@@ -33,7 +30,7 @@ public class PartitionEqualSubsetSum {
             return false;
         }
 
-        if (failed.contains(new Pair(nextIdx, currentSum))) {
+        if (failed[nextIdx]!= null && failed[nextIdx].contains(currentSum)) {
             return false;
         }
 
@@ -45,7 +42,10 @@ public class PartitionEqualSubsetSum {
             final boolean result = canPartitionRec(nums, wantedSum, currentSum, nextIdx + 1)
                     || canPartitionRec(nums, wantedSum, newSum, nextIdx + 1);
             if (!result) {
-                failed.add(new Pair(nextIdx, currentSum));
+                if (failed[nextIdx] == null) {
+                    failed[nextIdx] = new HashSet<>();
+                }
+                failed[nextIdx].add(currentSum);
             }
             return result;
         } else {
@@ -53,7 +53,10 @@ public class PartitionEqualSubsetSum {
             if (currentSumResult) {
                 return true;
             } else {
-                failed.add(new Pair(nextIdx, currentSum));
+                if (failed[nextIdx] == null) {
+                    failed[nextIdx] = new HashSet<>();
+                }
+                failed[nextIdx].add(currentSum);
             }
             return false;
         }
