@@ -6,7 +6,30 @@ import java.util.Arrays;
  * https://leetcode.com/problems/partition-equal-subset-sum/
  */
 public class PartitionEqualSubsetSum {
-    public boolean canPartition(int[] nums) {
+    public boolean canPartitionIter(int[] nums) {
+        final int total = Arrays.stream(nums).sum();
+
+        if (total % 2 == 1) {
+            return false;
+        }
+
+        final int wantedSum = total / 2;
+
+        Arrays.sort(nums);
+
+        int sum = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            sum+=nums[i];
+            if (sum == wantedSum) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean canPartitionRecursive(int[] nums) {
         final int total = Arrays.stream(nums).sum();
 
         if (total % 2 == 1) {
@@ -20,7 +43,7 @@ public class PartitionEqualSubsetSum {
     }
 
 
-    public boolean canPartitionRec(int[] nums, int wantedSum, int currentSum, int nextIdx) {
+    private boolean canPartitionRec(int[] nums, int wantedSum, int currentSum, int nextIdx) {
         if (nextIdx >= nums.length) {
             return false;
         }
@@ -33,7 +56,7 @@ public class PartitionEqualSubsetSum {
             return canPartitionRec(nums, wantedSum, currentSum, nextIdx + 1)
                     || canPartitionRec(nums, wantedSum, newSum, nextIdx + 1);
         } else {
-            return canPartitionRec(nums, wantedSum, currentSum, nextIdx + 1);
+            return false;
         }
 
     }

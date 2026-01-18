@@ -1,6 +1,5 @@
 package net.sr89;
 
-import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,16 +15,19 @@ class PartitionEqualSubsetSumTest {
     @ParameterizedTest
     @MethodSource("testCases")
     void runTests(boolean expected, int[] nums) {
-        assertEquals(expected, solution.canPartition(nums));
+        assertEquals(expected, solution.canPartitionRecursive(nums));
     }
 
     private static Stream<Arguments> testCases() {
         return Stream.of(
                 Arguments.of(true, new int[]{1, 5, 11, 5}),
                 Arguments.of(true, new int[]{1, 1}),
+
+                // 3 6 8 16 20
+                // 3 16 16 18
                 Arguments.of(true, new int[]{3, 3, 6, 8, 16, 16, 16, 18, 20}),
-                Arguments.of(true, repeat(20, 1)),
-                Arguments.of(false, repeat(21, 1)),
+                Arguments.of(true, repeat(200, 1)),
+                Arguments.of(false, repeat(201, 1)),
                 Arguments.of(false, new int[]{1, 1, 1}),
                 Arguments.of(false, new int[]{1, 2, 3, 5})
         );
