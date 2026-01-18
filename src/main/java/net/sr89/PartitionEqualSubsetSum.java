@@ -38,8 +38,7 @@ public class PartitionEqualSubsetSum {
 
         final int wantedSum = total / 2;
 
-        return canPartitionRec(nums, wantedSum, 0, 0)
-                || canPartitionRec(nums, wantedSum, 0, 1);
+        return canPartitionRec(nums, wantedSum, 0, 0);
     }
 
 
