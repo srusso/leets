@@ -29,13 +29,12 @@ public class PartitionEqualSubsetSum {
 
         if (newSum == wantedSum) {
             return true;
+        } else if (newSum < wantedSum) {
+            return canPartitionRec(nums, wantedSum, currentSum, nextIdx + 1)
+                    || canPartitionRec(nums, wantedSum, newSum, nextIdx + 1);
+        } else {
+            return canPartitionRec(nums, wantedSum, currentSum, nextIdx + 1);
         }
 
-        if (newSum > wantedSum) {
-            return false;
-        }
-
-        return canPartitionRec(nums, wantedSum, newSum, nextIdx + 1)
-                || canPartitionRec(nums, wantedSum, newSum, nextIdx + 2);
     }
 }
