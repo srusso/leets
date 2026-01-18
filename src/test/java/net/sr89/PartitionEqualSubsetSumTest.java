@@ -28,6 +28,7 @@ class PartitionEqualSubsetSumTest {
         return Stream.of(
                 Arguments.of(true, new int[]{1, 5, 11, 5}),
                 Arguments.of(true, new int[]{1, 1}),
+                Arguments.of(true, new int[]{14, 9, 8, 4, 3, 2}),
 
                 // 3 6 8 16 20
                 // 3 16 16 18
@@ -40,7 +41,7 @@ class PartitionEqualSubsetSumTest {
     private static Stream<Arguments> slowTestCases() {
         return Stream.of(
                 Arguments.of(true, repeat(200, 1)),
-                Arguments.of(false, repeat(21, 1))
+                Arguments.of(false, repeat(201, 1))
         );
     }
 
