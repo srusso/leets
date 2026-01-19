@@ -8,20 +8,20 @@ import java.util.*;
 public class PerfectSquares {
 
     private static final Set<Integer> squaresSet = new HashSet<>();
-    private Map<Integer, Integer> solutions = new HashMap<>();
+    private int[] solutions = new int[10001];
 
     static {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i <= 100; i++) {
             squaresSet.add(i * i);
         }
     }
 
     public int numSquares(int n) {
-        solutions.put(1, 1);
-        solutions.put(2, 2);
-        solutions.put(3, 3);
-        solutions.put(4, 1);
-        solutions.put(5, 2);
+        solutions[1]=1;
+        solutions[2]=2;
+        solutions[3]=3;
+        solutions[4]=1;
+        solutions[5]=2;
 
         for (int i = 6; i <= n; i++) {
             int minSolution = Integer.MAX_VALUE;
@@ -31,12 +31,12 @@ public class PerfectSquares {
                 for (int j = i/2; j < i; j++) {
                     minSolution = Math.min(
                             minSolution,
-                            solutions.get(j) + solutions.get(i - j));
+                            solutions[j] + solutions[i - j]);
                 }
             }
-            solutions.put(i, minSolution);
+            solutions[i] = minSolution;
         }
 
-        return solutions.get(n);
+        return solutions[n];
     }
 }

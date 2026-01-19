@@ -22,7 +22,8 @@ class PerfectSquaresTest {
                 Arguments.of(3, 12),
                 Arguments.of(2, 13),
                 Arguments.of(3, 4128),
-                Arguments.of(4, 4703)
+                Arguments.of(4, 4703),
+                Arguments.of(1, 10000)
         );
     }
 }
