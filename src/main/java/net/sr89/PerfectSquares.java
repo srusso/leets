@@ -28,7 +28,7 @@ public class PerfectSquares {
             if (squaresSet.contains(i)) {
                 minSolution = 1;
             } else {
-                for (int j = 1; j < i; j++) {
+                for (int j = i/2; j < i; j++) {
                     minSolution = Math.min(
                             minSolution,
                             solutions.get(j) + solutions.get(i - j));

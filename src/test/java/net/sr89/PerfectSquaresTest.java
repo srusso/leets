@@ -20,7 +20,9 @@ class PerfectSquaresTest {
     private static Stream<Arguments> testCases() {
         return Stream.of(
                 Arguments.of(3, 12),
-                Arguments.of(2, 13)
+                Arguments.of(2, 13),
+                Arguments.of(3, 4128),
+                Arguments.of(4, 4703)
         );
     }
 }
