@@ -14,19 +14,27 @@ class InvertTreeTest {
 
     @ParameterizedTest
     @MethodSource("testCases")
-    void runTests(TreeNode expected, TreeNode input) {
+    void runTests(TreeNode input, TreeNode expected) {
         assertEquals(expected, solution.invertTree(input));
     }
 
     private static Stream<Arguments> testCases() {
         return Stream.of(
                 Arguments.of(
-                        new TreeNode(2, new TreeNode(1), new TreeNode(3)),
-                        new TreeNode(2, new TreeNode(3), new TreeNode(1))
+                        new TreeNode(2, new TreeNode(3), new TreeNode(1)),
+                        new TreeNode(2, new TreeNode(1), new TreeNode(3))
                 ),
                 Arguments.of(
-                        new TreeNode(4, new TreeNode(7, new TreeNode(9), new TreeNode(6)), new TreeNode(2, new TreeNode(3), new TreeNode(1))),
-                        new TreeNode(4, new TreeNode(2, new TreeNode(1), new TreeNode(3)), new TreeNode(7, new TreeNode(6), new TreeNode(9)))
+                        new TreeNode(4, new TreeNode(2, new TreeNode(1), new TreeNode(3)), new TreeNode(7, new TreeNode(6), new TreeNode(9))),
+                        new TreeNode(4, new TreeNode(7, new TreeNode(9), new TreeNode(6)), new TreeNode(2, new TreeNode(3), new TreeNode(1)))
+                ),
+                Arguments.of(
+                        new TreeNode(2,
+                                new TreeNode(3, new TreeNode(1), null),
+                                null),
+                        new TreeNode(2,
+                                null,
+                                new TreeNode(3, null, new TreeNode(1)))
                 )
         );
     }

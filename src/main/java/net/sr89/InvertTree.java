@@ -46,6 +46,10 @@ public class InvertTree {
     }
 
     public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+
         Deque<TreeNode> stack = new LinkedList<>();
 
         stack.push(root);
