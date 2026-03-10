@@ -50,26 +50,45 @@ public class InvertTree {
 
         stack.push(root);
 
-        while(!stack.isEmpty()) {
-            TreeNode node = stack.pop();
+        TreeNode lastPopped = null;
 
-            TreeNode tmp = node.left;
-            node.left = node.right;
-            node.right = tmp;
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.element();
 
             if (node.left == null && node.right == null) {
-                // This is like the "recursion" base case: we are at a leaf node, nothing to do.
-            } else if (node.left != null) {
-                // Depth first search: we can still go downwards to the left, so let's do it
-                stack.push(node.left);
-            } else {
-                // We cannot go left anymore, but we can go right, so let's do that
-                stack.push(node.right);
+                lastPopped = stack.pop();
+                continue;
             }
 
+            final boolean upFromLeft = lastPopped == node.left;
+            final boolean upFromRight = lastPopped == node.right;
 
+            if (upFromLeft && node.right != null) {
+                stack.push(node.right);
+                continue;
+            } if (upFromLeft) {
+                swap(node);
+                lastPopped = stack.pop();
+                continue;
+            } else if (upFromRight) {
+                swap(node);
+                lastPopped = stack.pop();
+                continue;
+            }
+
+            if (node.left != null) {
+                stack.push(node.left);
+            } else {
+                stack.push(node.right);
+            }
         }
 
         return root;
+    }
+
+    private void swap(TreeNode node) {
+        TreeNode tmp = node.left;
+        node.left = node.right;
+        node.right = tmp;
     }
 }
