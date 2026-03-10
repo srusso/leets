@@ -57,30 +57,25 @@ public class InvertTree {
         TreeNode lastPopped = null;
 
         while (!stack.isEmpty()) {
-            TreeNode node = stack.element();
-
-            if (node.left == null && node.right == null) {
-                lastPopped = stack.pop();
-                continue;
-            }
+            var node = stack.element();
 
             final boolean upFromLeft = lastPopped == node.left && node.left != null;
             final boolean upFromRight = lastPopped == node.right && node.right != null;
 
-            if (upFromLeft && node.right != null) {
+            if (node.left == null && node.right == null) {
+                // Visiting terminal node, nothing to do but go back up the stack.
+                lastPopped = stack.pop();
+            } else if (upFromLeft && node.right != null) {
+                // We just visited the left subtree and there is a right subtree, so visit that now.
                 stack.push(node.right);
-                continue;
-            } if (upFromLeft) {
-                swap(node);
-                lastPopped = stack.pop();
-                continue;
-            } else if (upFromRight) {
-                swap(node);
-                lastPopped = stack.pop();
-                continue;
-            }
+            } else if (upFromLeft || upFromRight) {
+                // We just visited both available subtrees, time to swap and go back up the stack.
+                TreeNode tmp = node.left;
+                node.left = node.right;
+                node.right = tmp;
 
-            if (node.left != null) {
+                lastPopped = stack.pop();
+            } else if (node.left != null) {
                 stack.push(node.left);
             } else {
                 stack.push(node.right);
@@ -88,11 +83,5 @@ public class InvertTree {
         }
 
         return root;
-    }
-
-    private void swap(TreeNode node) {
-        TreeNode tmp = node.left;
-        node.left = node.right;
-        node.right = tmp;
     }
 }
