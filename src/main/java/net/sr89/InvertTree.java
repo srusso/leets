@@ -64,8 +64,8 @@ public class InvertTree {
                 continue;
             }
 
-            final boolean upFromLeft = lastPopped == node.left;
-            final boolean upFromRight = lastPopped == node.right;
+            final boolean upFromLeft = lastPopped == node.left && node.left != null;
+            final boolean upFromRight = lastPopped == node.right && node.right != null;
 
             if (upFromLeft && node.right != null) {
                 stack.push(node.right);
