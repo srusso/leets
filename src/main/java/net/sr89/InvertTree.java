@@ -1,49 +1,11 @@
 package net.sr89;
 
+import net.sr89.types.TreeNode;
+
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Objects;
 
 public class InvertTree {
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()) return false;
-            TreeNode treeNode = (TreeNode) o;
-            return val == treeNode.val && Objects.equals(left, treeNode.left) && Objects.equals(right, treeNode.right);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(val, left, right);
-        }
-
-        @Override
-        public String toString() {
-            return "{" +
-                    "val=" + val +
-                    "," + (left == null ? "_" : left) +
-                    "," + (right == null ? "_" : right) +
-                    '}';
-        }
-    }
 
     public TreeNode invertTree(TreeNode root) {
         if (root == null) {
