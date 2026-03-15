@@ -9,7 +9,7 @@ import java.util.LinkedList;
  * <a href="https://leetcode.com/problems/validate-binary-search-tree/">Leetcode link</a>
  */
 public class ValidateBinarySearchTree {
-    private record MinMax(TreeNode node, int min, int max) {
+    private record MinMax(TreeNode node, Integer min, Integer max) {
     }
 
     public boolean isValidBST(TreeNode root) {
@@ -19,7 +19,7 @@ public class ValidateBinarySearchTree {
 
         Deque<MinMax> stack = new LinkedList<>();
 
-        stack.push(new MinMax(root, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        stack.push(new MinMax(root, null, null));
 
         MinMax lastPopped = null;
 
@@ -37,7 +37,9 @@ public class ValidateBinarySearchTree {
                 // Visiting terminal node
                 lastPopped = stack.pop();
 
-                if (currentTreeNode.val <= currentAllowedMin || currentTreeNode.val >= currentAllowedMax) {
+                boolean lessThanMin = currentAllowedMin == null ? false : currentTreeNode.val <= currentAllowedMin;
+                boolean moreThanMax = currentAllowedMax == null ? false : currentTreeNode.val >= currentAllowedMax;
+                if (lessThanMin || moreThanMax) {
                     return false;
                 }
             } else if (upFromLeft && currentTreeNode.right != null) {
@@ -48,7 +50,9 @@ public class ValidateBinarySearchTree {
                 // We just visited both available subtrees
                 lastPopped = stack.pop();
 
-                if (currentTreeNode.val <= currentAllowedMin || currentTreeNode.val >= currentAllowedMax) {
+                boolean lessThanMin = currentAllowedMin == null ? false : currentTreeNode.val <= currentAllowedMin;
+                boolean moreThanMax = currentAllowedMax == null ? false : currentTreeNode.val >= currentAllowedMax;
+                if (lessThanMin || moreThanMax) {
                     return false;
                 }
             } else if (currentTreeNode.left != null) {
