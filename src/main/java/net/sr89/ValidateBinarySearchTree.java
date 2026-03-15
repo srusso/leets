@@ -22,50 +22,24 @@ public class ValidateBinarySearchTree {
         minStack.push(null);
         maxStack.push(null);
 
-        TreeNode lastPopped = null;
-
         while (!stack.isEmpty()) {
-            var currentTreeNode = stack.element();
-            var currentAllowedMin = minStack.element();
-            var currentAllowedMax = maxStack.element();
+            var currentTreeNode = stack.pop();
+            var currentAllowedMin = minStack.pop();
+            var currentAllowedMax = maxStack.pop();
 
-            final boolean upFromLeft = lastPopped == currentTreeNode.left && currentTreeNode.left != null;
-            final boolean upFromRight = lastPopped == currentTreeNode.right && currentTreeNode.right != null;
+            boolean lessThanMin = currentAllowedMin != null && currentTreeNode.val <= currentAllowedMin;
+            boolean moreThanMax = currentAllowedMax != null && currentTreeNode.val >= currentAllowedMax;
+            if (lessThanMin || moreThanMax) {
+                return false;
+            }
 
-            if (currentTreeNode.left == null && currentTreeNode.right == null) {
-                // Visiting terminal node
-                lastPopped = stack.pop();
-                minStack.pop();
-                maxStack.pop();
-
-                boolean lessThanMin = currentAllowedMin != null && currentTreeNode.val <= currentAllowedMin;
-                boolean moreThanMax = currentAllowedMax != null && currentTreeNode.val >= currentAllowedMax;
-                if (lessThanMin || moreThanMax) {
-                    return false;
-                }
-            } else if (upFromLeft && currentTreeNode.right != null) {
-                // We just visited the left subtree and there is a right subtree
-
-                stack.push(currentTreeNode.right);
-                minStack.push(currentTreeNode.val);
-                maxStack.push(currentAllowedMax);
-            } else if (upFromLeft || upFromRight) {
-                // We just visited both available subtrees
-                lastPopped = stack.pop();
-                minStack.pop();
-                maxStack.pop();
-
-                boolean lessThanMin = currentAllowedMin != null && currentTreeNode.val <= currentAllowedMin;
-                boolean moreThanMax = currentAllowedMax != null && currentTreeNode.val >= currentAllowedMax;
-                if (lessThanMin || moreThanMax) {
-                    return false;
-                }
-            } else if (currentTreeNode.left != null) {
-                // you go left, the minimum stays the same, the maximum changes
+            if (currentTreeNode.left != null) {
                 stack.push(currentTreeNode.left);
                 minStack.push(currentAllowedMin);
                 maxStack.push(currentTreeNode.val);
-            } else {
+            }
+
+            if (currentTreeNode.right != null) {
                 stack.push(currentTreeNode.right);
                 minStack.push(currentTreeNode.val);
                 maxStack.push(currentAllowedMax);
