@@ -28,7 +28,7 @@ public class StudentAttendanceRecord2 {
         sol[4] = 13;
 
         for (int i = 5; i <= n; i++) {
-            int soli = (2 * (sol[i])) - sol[i - 4];
+            int soli = (2 * (sol[i - 1])) - sol[i - 4];
 
             if (soli < 0) {
                 sol[i] = soli + modulo;
