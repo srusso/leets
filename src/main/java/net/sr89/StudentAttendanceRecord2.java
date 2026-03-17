@@ -16,7 +16,7 @@ public class StudentAttendanceRecord2 {
         }
 
         // solutions ignoring absences
-        int[] sol = new int[100005];
+        long[] sol = new long[100005];
 
         sol[0] = 1; // only one way to have 0 elements
         sol[1] = 2; // P, L
@@ -38,10 +38,10 @@ public class StudentAttendanceRecord2 {
         }
 
         // now insert the absence in each location
-        int allSolutions = 0;
+        long allSolutions = 0;
 
         for (int i = 1; i <= n; i++) {
-            int solutionsWithAbsenceAtI = sol[i - 1] * sol[n - i];
+            long solutionsWithAbsenceAtI = sol[i - 1] * sol[n - i];
             solutionsWithAbsenceAtI = calcModulo(solutionsWithAbsenceAtI);
             allSolutions += solutionsWithAbsenceAtI;
             allSolutions = calcModulo(allSolutions);
