@@ -21,8 +21,11 @@ public class StudentAttendanceRecord2 {
         sol[0] = 1; // only one way to have 0 elements
         sol[1] = 2; // P, L
         sol[2] = 4; // PP, LP, PL, LL
-        sol[3] = 7; // PPP, PLP, PPL, PLL, LPP, LPL, LLP
-        sol[4] = sol[3] * 2; // take each solution for the previous case and append either P or L
+        sol[3] = 8; // PPP, PLP, PPL, PLL, LPP, LPL, LLP, LLL
+
+        // take each solution for the previous case and append P
+        // take each solution for the previous case except LLL and append L
+        sol[4] = 15;
 
         for (int i = 5; i <= n; i++) {
             int solN = (2 * (sol[i])) - sol[i - 5];
