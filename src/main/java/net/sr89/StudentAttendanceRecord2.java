@@ -28,12 +28,12 @@ public class StudentAttendanceRecord2 {
         sol[4] = 13;
 
         for (int i = 5; i <= n; i++) {
-            int soli = (2 * (sol[i - 1])) - sol[i - 4];
+            long soli = (2 * (sol[i - 1])) - sol[i - 4];
 
             if (soli < 0) {
-                sol[i] = soli + modulo;
+                sol[i] = positive(soli);
             } else {
-                sol[i] = soli % modulo;
+                sol[i] = calcModulo(soli);
             }
         }
 
@@ -42,11 +42,23 @@ public class StudentAttendanceRecord2 {
 
         for (int i = 1; i <= n; i++) {
             int solutionsWithAbsenceAtI = sol[i - 1] * sol[n - i];
-            solutionsWithAbsenceAtI = solutionsWithAbsenceAtI % modulo;
+            solutionsWithAbsenceAtI = calcModulo(solutionsWithAbsenceAtI);
             allSolutions += solutionsWithAbsenceAtI;
-            allSolutions = allSolutions % modulo;
+            allSolutions = calcModulo(allSolutions);
         }
 
-        return (allSolutions + sol[n]) % modulo;
+        return calcModulo((allSolutions + sol[n]));
+    }
+
+    public static int calcModulo(long soli) {
+        return (int) (soli % modulo);
+    }
+
+    public static int positive(long soli) {
+        long times = -soli / modulo;
+        if (soli % modulo != 0) {
+            times += 1;
+        }
+        return (int) (soli + modulo * times);
     }
 }
