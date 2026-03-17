@@ -15,15 +15,15 @@ public class StudentAttendanceRecord2 {
             return 8;
         }
 
+        // solutions ignoring absences
         int[] sol = new int[100005];
 
         sol[0] = 1;
         sol[1] = 2;
         sol[2] = 4;
-        sol[3] = 8;
-        sol[4] = 15;
+        sol[3] = 7;
+        sol[4] = 14;
 
-        // solutions ignoring absences
         for (int i = 5; i <= n; i++) {
             int solN = (2 * (sol[i])) - sol[i - 5];
 
@@ -35,7 +35,6 @@ public class StudentAttendanceRecord2 {
         }
 
         // now insert the absence in each location
-
         int allSolutions = 0;
 
         for (int i = 1; i <= n; i++) {
@@ -45,6 +44,6 @@ public class StudentAttendanceRecord2 {
             allSolutions = allSolutions % modulo;
         }
 
-        return allSolutions + sol[n];
+        return (allSolutions + sol[n]) % modulo;
     }
 }
