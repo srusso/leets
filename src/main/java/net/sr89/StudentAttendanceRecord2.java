@@ -21,19 +21,19 @@ public class StudentAttendanceRecord2 {
         sol[0] = 1; // only one way to have 0 elements
         sol[1] = 2; // P, L
         sol[2] = 4; // PP, LP, PL, LL
-        sol[3] = 8; // PPP, PLP, PPL, PLL, LPP, LPL, LLP, LLL
+        sol[3] = 7; // PPP, LPP, PLP, PPL, PLL, LPL, LLP
 
         // take each solution for the previous case and append P
-        // take each solution for the previous case except LLL and append L
-        sol[4] = 15;
+        // take each solution for the previous case except PLL and append L
+        sol[4] = 13;
 
         for (int i = 5; i <= n; i++) {
-            int solN = (2 * (sol[i])) - sol[i - 5];
+            int soli = (2 * (sol[i])) - sol[i - 4];
 
-            if (solN < 0) {
-                sol[i] = solN + modulo;
+            if (soli < 0) {
+                sol[i] = soli + modulo;
             } else {
-                sol[i] = solN % modulo;
+                sol[i] = soli % modulo;
             }
         }
 
