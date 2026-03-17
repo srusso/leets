@@ -18,11 +18,11 @@ public class StudentAttendanceRecord2 {
         // solutions ignoring absences
         int[] sol = new int[100005];
 
-        sol[0] = 1;
-        sol[1] = 2;
-        sol[2] = 4;
-        sol[3] = 7;
-        sol[4] = 14;
+        sol[0] = 1; // only one way to have 0 elements
+        sol[1] = 2; // P, L
+        sol[2] = 4; // PP, LP, PL, LL
+        sol[3] = 7; // PPP, PLP, PPL, PLL, LPP, LPL, LLP
+        sol[4] = sol[3] * 2; // take each solution for the previous case and append either P or L
 
         for (int i = 5; i <= n; i++) {
             int solN = (2 * (sol[i])) - sol[i - 5];
