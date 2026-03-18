@@ -7,14 +7,6 @@ public class StudentAttendanceRecord2 {
     private static final int modulo = 1000000007;
 
     public int checkRecord(int n) {
-        if (n == 1) {
-            return 3;
-        }
-
-        if (n == 2) {
-            return 8;
-        }
-
         // solutions ignoring absences
         long[] sol = new long[100005];
 
