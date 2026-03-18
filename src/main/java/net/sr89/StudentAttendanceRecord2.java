@@ -44,7 +44,6 @@ public class StudentAttendanceRecord2 {
             long solutionsWithAbsenceAtI = sol[i - 1] * sol[n - i];
             solutionsWithAbsenceAtI = calcModulo(solutionsWithAbsenceAtI);
             allSolutions += solutionsWithAbsenceAtI;
-            allSolutions = calcModulo(allSolutions);
         }
 
         return calcModulo((allSolutions + sol[n]));
