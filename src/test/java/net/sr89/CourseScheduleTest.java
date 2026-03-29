@@ -19,8 +19,14 @@ class CourseScheduleTest {
 
     private static Stream<Arguments> testCases() {
         return Stream.of(
+                // trivial positive case
                 Arguments.of(true, 2, new int[][]{{1, 0}}),
-                Arguments.of(false, 2, new int[][]{{1, 0}, {0, 1}})
+
+                // trivial cycle
+                Arguments.of(false, 2, new int[][]{{1, 0}, {0, 1}}),
+
+                // test case: 5 courses, prerequisites not specified for 0, no cycles
+                Arguments.of(true, 5, new int[][]{{1, 4}, {2, 4}, {3, 1}, {3, 2}})
         );
     }
 }

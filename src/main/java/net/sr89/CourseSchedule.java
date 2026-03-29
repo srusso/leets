@@ -1,9 +1,11 @@
 package net.sr89;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -37,20 +39,22 @@ public class CourseSchedule {
             Node nextNode = allNodes.poll();
 
             if (!allVisited.contains(nextNode.value)) {
-                Set<Integer> visitedInCurrentSubtree = new HashSet<>();
-                Queue<Node> currentSubtree = new LinkedList<>();
-                currentSubtree.add(nextNode);
-                while (!currentSubtree.isEmpty()) {
-                    Node node = currentSubtree.poll();
+                Map<Integer, Set<Integer>> visitedInCurrentSubtreeBy = new HashMap<>();
+                Queue<Node> toVisit = new LinkedList<>();
+                toVisit.add(nextNode);
+                while (!toVisit.isEmpty()) {
+                    Node parent = toVisit.poll();
 
-                    if (visitedInCurrentSubtree.contains(node.value)) {
-                        return false;
+                    allVisited.add(parent.value);
+                    toVisit.addAll(parent.children);
+
+                    for (Node child : parent.children) {
+                        boolean added = visitedInCurrentSubtreeBy.computeIfAbsent(child.value, i -> new HashSet<>()).add(parent.value);
+
+                        if (!added) { // if it's the second time we visit child from the same parent, we found a cycle
+                            return false;
+                        }
                     }
-
-                    visitedInCurrentSubtree.add(node.value);
-                    allVisited.add(node.value);
-
-                    currentSubtree.addAll(node.children);
                 }
             }
         }
