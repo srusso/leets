@@ -1,11 +1,9 @@
 package net.sr89;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -39,26 +37,40 @@ public class CourseSchedule {
             Node nextNode = allNodes.poll();
 
             if (!allVisited.contains(nextNode.value)) {
-                Map<Integer, Set<Integer>> visitedInCurrentSubtreeBy = new HashMap<>();
-                Queue<Node> toVisit = new LinkedList<>();
-                toVisit.add(nextNode);
-                while (!toVisit.isEmpty()) {
-                    Node parent = toVisit.poll();
-
-                    allVisited.add(parent.value);
-                    toVisit.addAll(parent.children);
-
-                    for (Node child : parent.children) {
-                        boolean added = visitedInCurrentSubtreeBy.computeIfAbsent(child.value, i -> new HashSet<>()).add(parent.value);
-
-                        if (!added) { // if it's the second time we visit child from the same parent, we found a cycle
-                            return false;
-                        }
-                    }
+                if (hasCycle(nextNode, allVisited)) {
+                    return false;
                 }
             }
         }
 
         return true;
+    }
+
+    private boolean hasCycle(Node root, Set<Integer> allVisited) {
+        Set<Integer> visited = new HashSet<>();
+        Set<Integer> recursionStack = new HashSet<>();
+        return dfs(root, visited, recursionStack, allVisited);
+    }
+
+    private boolean dfs(Node node, Set<Integer> visited, Set<Integer> recursionStack, Set<Integer> allVisited) {
+        if (recursionStack.contains(node.value)) {
+            return true; // Cycle detected
+        }
+        if (visited.contains(node.value)) {
+            return false; // Already visited, no cycle from this path
+        }
+
+        allVisited.add(node.value);
+        visited.add(node.value);
+        recursionStack.add(node.value);
+
+        for (Node child : node.children()) {
+            if (dfs(child, visited, recursionStack, allVisited)) {
+                return true;
+            }
+        }
+
+        recursionStack.remove(node.value);
+        return false;
     }
 }

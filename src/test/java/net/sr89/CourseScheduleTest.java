@@ -25,8 +25,10 @@ class CourseScheduleTest {
                 // trivial cycle
                 Arguments.of(false, 2, new int[][]{{1, 0}, {0, 1}}),
 
-                // test case: 5 courses, prerequisites not specified for 0, no cycles
-                Arguments.of(true, 5, new int[][]{{1, 4}, {2, 4}, {3, 1}, {3, 2}})
+                // test case: node has two "parents", but no cycle
+                Arguments.of(true, 5, new int[][]{{1, 4}, {2, 4}, {3, 1}, {3, 2}}),
+
+                Arguments.of(true, 8, new int[][]{{1,0},{2,6},{1,7},{6,4},{7,0},{0,5}})
         );
     }
 }
