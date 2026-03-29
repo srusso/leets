@@ -1,4 +1,4 @@
-Next up:
+### Problems to solve
 
 Meeting Rooms III (LeetCode 2402)
 Height of Binary Tree After Subtree Removal Queries (LeetCode 2458)
@@ -15,3 +15,7 @@ Longest Consecutive Sequence (LeetCode 128)
 Course Schedule II
 Course Schedule III
 Parallel Courses
+
+### Topics to look up
+
+Topological sort

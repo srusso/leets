@@ -1,10 +1,8 @@
 package net.sr89;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -30,12 +28,9 @@ public class CourseSchedule {
     }
 
     private boolean canFinish(Node[] nodes) {
-        Queue<Node> allNodes = new LinkedList<>(Arrays.asList(nodes));
         Set<Integer> allVisited = new HashSet<>();
 
-        while(!allNodes.isEmpty()) {
-            Node nextNode = allNodes.poll();
-
+        for(Node nextNode : nodes) {
             if (!allVisited.contains(nextNode.value)) {
                 if (hasCycle(nextNode, allVisited)) {
                     return false;
@@ -47,12 +42,10 @@ public class CourseSchedule {
     }
 
     private boolean hasCycle(Node root, Set<Integer> allVisited) {
-        Set<Integer> visited = new HashSet<>();
-        Set<Integer> recursionStack = new HashSet<>();
-        return dfs(root, visited, recursionStack, allVisited);
+        return dfs(root, allVisited, new HashSet<>());
     }
 
-    private boolean dfs(Node node, Set<Integer> visited, Set<Integer> recursionStack, Set<Integer> allVisited) {
+    private boolean dfs(Node node, Set<Integer> visited, Set<Integer> recursionStack) {
         if (recursionStack.contains(node.value)) {
             return true; // Cycle detected
         }
@@ -60,12 +53,11 @@ public class CourseSchedule {
             return false; // Already visited, no cycle from this path
         }
 
-        allVisited.add(node.value);
         visited.add(node.value);
         recursionStack.add(node.value);
 
         for (Node child : node.children()) {
-            if (dfs(child, visited, recursionStack, allVisited)) {
+            if (dfs(child, visited, recursionStack)) {
                 return true;
             }
         }
