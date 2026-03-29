@@ -9,7 +9,16 @@ import java.util.Set;
  * <a href="https://leetcode.com/problems/course-schedule/description/">Leetcode</a>
  */
 public class CourseSchedule {
-    private record Node (int value, List<Node> children) {}
+    private static class Node {
+        boolean visited = false;
+        int value;
+        List<Node> children;
+
+        public Node(int value, List<Node> children) {
+            this.value = value;
+            this.children = children;
+        }
+    }
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         Node [] nodes = new Node[numCourses + 1];
@@ -28,11 +37,9 @@ public class CourseSchedule {
     }
 
     private boolean canFinish(Node[] nodes) {
-        Set<Integer> allVisited = new HashSet<>();
-
         for(Node nextNode : nodes) {
-            if (!allVisited.contains(nextNode.value)) {
-                if (hasCycle(nextNode, allVisited)) {
+            if (!nextNode.visited) {
+                if (hasCycle(nextNode)) {
                     return false;
                 }
             }
@@ -41,23 +48,23 @@ public class CourseSchedule {
         return true;
     }
 
-    private boolean hasCycle(Node root, Set<Integer> allVisited) {
-        return dfs(root, allVisited, new HashSet<>());
+    private boolean hasCycle(Node root) {
+        return dfs(root, new HashSet<>());
     }
 
-    private boolean dfs(Node node, Set<Integer> visited, Set<Integer> recursionStack) {
+    private boolean dfs(Node node, Set<Integer> recursionStack) {
         if (recursionStack.contains(node.value)) {
             return true; // Cycle detected
         }
-        if (visited.contains(node.value)) {
+        if (node.visited) {
             return false; // Already visited, no cycle from this path
         }
 
-        visited.add(node.value);
+        node.visited = true;
         recursionStack.add(node.value);
 
-        for (Node child : node.children()) {
-            if (dfs(child, visited, recursionStack)) {
+        for (Node child : node.children) {
+            if (dfs(child, recursionStack)) {
                 return true;
             }
         }
