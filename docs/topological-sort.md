@@ -14,11 +14,12 @@ I.e. given graph `{(u -> v), (u -> t), (t -> k)}` then the sort could output `[u
 
 # Basic algorithm
 
-1. Calculate in-degree for each node.
-2. Enqueue all nodes with in-degree 0.
+1. Calculate in-degree for each node. In-degree of a node: how many nodes it depends on.
+   - `in-degree = 0` means the node depends on nothing
+2. Create a queue of all nodes which depend on nothing. Add to it all nodes with in-degree 0.
 3. While the queue is not empty:
-   a. Dequeue a node, add it to the result.
-   b. For each neighbor of the node:
-      i. Reduce its in-degree by 1.
-      ii. If in-degree becomes 0, enqueue it.
+   - Dequeue a node, add it to the result.
+   - For each neighbor of the node:
+      - Reduce its in-degree by 1.
+      - If in-degree becomes 0, enqueue it.
 4. If the result contains all nodes, return the result. Otherwise, there is a cycle.
