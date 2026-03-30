@@ -20,8 +20,9 @@ public class CourseSchedule {
         }
     }
 
+    // Solution using topological sort
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-
+        return false;
     }
 
     // Simple solution which builds a directed tree and detects cycles
