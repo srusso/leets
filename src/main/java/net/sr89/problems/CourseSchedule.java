@@ -1,5 +1,7 @@
 package net.sr89.problems;
 
+import net.sr89.algorithm.TopologicalSort;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +24,8 @@ public class CourseSchedule {
 
     // Solution using topological sort
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        return false;
+        TopologicalSort sort = new TopologicalSort();
+        return !sort.topologicalSort(numCourses, prerequisites).isEmpty();
     }
 
     // Simple solution which builds a directed tree and detects cycles
