@@ -7,6 +7,44 @@ import java.util.Queue;
 
 public class TopologicalSort {
     /**
+     * Same as {@link #topologicalSort(int, int[][])} but returning an array.
+     */
+    public int[] topologicalSort_Array(int vertexCount, int[][] edges) {
+        List<List<Integer>> graph = new ArrayList<>(vertexCount);
+
+        for (int i = 0; i < vertexCount; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        int[] inDegree = new int[vertexCount];
+        for (int[] edge : edges) {
+            graph.get(edge[1]).add(edge[0]);
+            inDegree[edge[0]]++;
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < vertexCount; i++) {
+            if (inDegree[i] == 0) {
+                queue.add(i);
+            }
+        }
+
+        int[] result = new int[vertexCount];
+        int pos = 0;
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            result[pos++] = node;
+            for (int neighbor : graph.get(node)) {
+                if (--inDegree[neighbor] == 0) {
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        return pos == vertexCount ? result : new int[]{};
+    }
+
+    /**
      * @return The sorted vertices of the graph. Empty list if the graph contains one or more cycles.
      */
     public List<Integer> topologicalSort(int vertexCount, int[][] edges) {
