@@ -1,6 +1,7 @@
 package net.sr89.problems;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.PriorityQueue;
 
 /**
@@ -17,7 +18,7 @@ public class CourseSchedule3 {
         });
 
         int takenCoursesTotalDuration = 0;
-        PriorityQueue<Integer> durationsOfTakenCourses = new PriorityQueue<>();
+        PriorityQueue<Integer> durationsOfTakenCourses = new PriorityQueue<>(Collections.reverseOrder());
 
         for (int i = 0 ; i < courses.length ; i++) {
             int duration = courses[i][0];
@@ -27,7 +28,11 @@ public class CourseSchedule3 {
                 takenCoursesTotalDuration += duration;
                 durationsOfTakenCourses.add(duration);
             } else {
-                int longestTakenCourse = durationsOfTakenCourses.peek();
+                Integer longestTakenCourse = durationsOfTakenCourses.peek();
+
+                if (longestTakenCourse == null) {
+                    continue;
+                }
 
                 // check if we can take this course because it's shorter than a course we already took.
                 // note: we don't need to worry about end dates because the array is already sorted by ascending end dates
