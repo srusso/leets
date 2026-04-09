@@ -12,9 +12,6 @@ LRU Cache (LeetCode 146)
 Coin Change and knapsack related problems
 Binary Tree Maximum Path Sum (LeetCode 124)
 Longest Consecutive Sequence (LeetCode 128)
-Course Schedule II
-Course Schedule III
-Parallel Courses
 
 ### Topics to look up
 
