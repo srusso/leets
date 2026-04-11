@@ -15,6 +15,7 @@
 * Course Schedule II
 * Course Schedule III
 * Parallel Courses
+* 787. Cheapest Flights Within K Stops
 
 ### Topics to look up
 
