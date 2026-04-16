@@ -57,6 +57,14 @@ public class MeetingRooms {
 
         Interval lastMeeting = schedule.getLast();
 
-        return newMeeting.start >= lastMeeting.end ? schedule.size() : -1;
+        if (newMeeting.end <= lastMeeting.start) {
+            return schedule.size() - 1;
+        }
+
+        if (newMeeting.start >= lastMeeting.end) {
+            return schedule.size();
+        }
+
+        return -1;
     }
 }

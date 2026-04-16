@@ -23,7 +23,19 @@ class MeetingRoomsTest {
     private static Stream<Arguments> testCases() {
         return Stream.of(
                 Arguments.of(false, Arrays.asList(new Interval(0, 30), new Interval(5, 10), new Interval(15, 20))),
-                Arguments.of(true, Arrays.asList(new Interval(5, 8), new Interval(9, 15)))
+                Arguments.of(true, Arrays.asList(new Interval(5, 8), new Interval(9, 15))),
+                Arguments.of(true, Arrays.asList(
+                        new Interval(465, 497),
+                        new Interval(386, 462),
+                        new Interval(354, 380),
+                        new Interval(134, 189),
+                        new Interval(199, 282),
+                        new Interval(18, 104),
+                        new Interval(499, 562),
+                        new Interval(4, 14),
+                        new Interval(111, 129),
+                        new Interval(292, 345)
+                ))
         );
     }
 }
