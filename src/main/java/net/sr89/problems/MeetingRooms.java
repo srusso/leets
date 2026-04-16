@@ -2,8 +2,7 @@ package net.sr89.problems;
 
 import net.sr89.types.Interval;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -11,36 +10,23 @@ import java.util.List;
  */
 public class MeetingRooms {
     public boolean canAttendMeetings(List<Interval> intervals) {
-        List<Interval> schedule = new ArrayList<>(Arrays.asList(
-                new Interval(Integer.MIN_VALUE, Integer.MIN_VALUE + 1),
-                new Interval(Integer.MAX_VALUE - 1, Integer.MAX_VALUE)
-        ));
+        intervals.sort(Comparator.comparingInt(inter -> inter.start));
 
-        for (Interval newMeeting : intervals) {
-            int addAtIndex = whereToAdd(schedule, newMeeting);
+        Interval previous = null;
 
-            if (addAtIndex < 0) {
+        for (Interval interval : intervals) {
+            if (previous == null) {
+                previous = interval;
+                continue;
+            }
+
+            if (interval.start < previous.end) {
                 return false;
             }
 
-            schedule.add(addAtIndex, newMeeting);
+            previous = interval;
         }
 
         return true;
-    }
-
-    private int whereToAdd(List<Interval> schedule, Interval newMeeting) {
-        int end = schedule.size() - 1;
-
-        for (int i = 0; i < end; i++) {
-            Interval currentMeeting = schedule.get(i);
-            Interval nextMeeting = schedule.get(i + 1);
-
-            if (newMeeting.start >= currentMeeting.end && newMeeting.end < nextMeeting.start) {
-                return i + 1;
-            }
-        }
-
-        return -1;
     }
 }
