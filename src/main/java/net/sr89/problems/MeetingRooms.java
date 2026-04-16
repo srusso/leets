@@ -3,6 +3,7 @@ package net.sr89.problems;
 import net.sr89.types.Interval;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -10,7 +11,10 @@ import java.util.List;
  */
 public class MeetingRooms {
     public boolean canAttendMeetings(List<Interval> intervals) {
-        List<Interval> schedule = new ArrayList<>();
+        List<Interval> schedule = new ArrayList<>(Arrays.asList(
+                new Interval(Integer.MIN_VALUE, Integer.MIN_VALUE + 1),
+                new Interval(Integer.MAX_VALUE - 1, Integer.MAX_VALUE)
+        ));
 
         for (Interval newMeeting : intervals) {
             int addAtIndex = whereToAdd(schedule, newMeeting);
@@ -26,24 +30,6 @@ public class MeetingRooms {
     }
 
     private int whereToAdd(List<Interval> schedule, Interval newMeeting) {
-        if (schedule.isEmpty()) {
-            return 0;
-        }
-
-        if (schedule.size() == 1) {
-            Interval firstMeeting = schedule.getFirst();
-
-            if (newMeeting.end <= firstMeeting.start) {
-                return 0;
-            }
-
-            if (newMeeting.start >= firstMeeting.end) {
-                return 1;
-            }
-
-            return -1;
-        }
-
         int end = schedule.size() - 1;
 
         for (int i = 0; i < end; i++) {
@@ -53,16 +39,6 @@ public class MeetingRooms {
             if (newMeeting.start >= currentMeeting.end && newMeeting.end < nextMeeting.start) {
                 return i + 1;
             }
-        }
-
-        Interval lastMeeting = schedule.getLast();
-
-        if (newMeeting.end <= lastMeeting.start) {
-            return schedule.size() - 1;
-        }
-
-        if (newMeeting.start >= lastMeeting.end) {
-            return schedule.size();
         }
 
         return -1;
